@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class LevelUpScript : MonoBehaviour
 {
-    public GameManager gameManager;
+    public GameManager gameManager;                   //스크립트, 오브젝트
     public Joystick joystick;
     public PlayerScript playerScript;
     public PlayerData playerData;
@@ -141,16 +141,16 @@ public class LevelUpScript : MonoBehaviour
     int ii;
     int n;
 
-    //임시로 무기 능력을 저장하는 오브젝트트
+                                                     //임시로 무기 능력을 저장하는 오브젝트트
     GameObject tempW_0;
     GameObject tempW_1;
     GameObject tempW_2;
 
-    public GameObject weaponGroup;   //무기 능력 오브젝트 그룹
-    public Button reroll;            //리롤버튼
-    public Image rerollImage;        //리롤버튼 이미지
+    public GameObject weaponGroup;                   //무기 능력 오브젝트 그룹
+    public Button reroll;                            //리롤버튼
+    public Image rerollImage;                        //리롤버튼 이미지
 
-    public MonManager monManager;    //몬스터 매니저저
+    public MonManager monManager; 
     public float monHp;
     public float monOffense;
     public float monDefense;
@@ -161,52 +161,50 @@ public class LevelUpScript : MonoBehaviour
 
     private void Awake()
     {    
-        //로컬라이제이션을 적용시킨 뒤에 오브젝트 비활성화
-        weaponGroup.SetActive(false);
+        weaponGroup.SetActive(false);                 //로컬라이제이션을 적용시킨 뒤에 오브젝트 비활성화
 
-        ResetStat();         //스탯 재설정
-        SetStatWeapon();     //무기 능력 설정
-        SetStar();           //무기 능력 레벨 별 표시 설정
+        ResetStat();                                  //스탯 재설정
+        SetStatWeapon();                              //무기 능력 설정
+        SetStar();                                    //무기 능력 레벨 별 표시 설정
     }
 
     //스탯 재설정
     void ResetStat()
     {
-        //미사일 데이터
-        missileData.speed = missileData.baseSpeed;
+        missileData.speed = missileData.baseSpeed;             //미사일 데이터
         missileData.damage = missileData.baseDamage;
         missileData.attackDelay = missileData.baseAttackDelay;
         missileData.critical = missileData.baseCritical;
         missileData.count = missileData.baseCount;
-        //마법검 데이터
-        swordData.speed = swordData.baseSpeed;
+        
+        swordData.speed = swordData.baseSpeed;                 //마법검 데이터
         swordData.damage = swordData.baseDamage;
         swordData.attackDelay = swordData.baseAttackDelay;
         swordData.isKnock = swordData.baseIsKnock;
         swordData.knockback = swordData.baseKnockback;
         swordData.duration = swordData.baseDuration;
-        //레이저 데이터
-        laserData.speed = laserData.baseSpeed;
+       
+        laserData.speed = laserData.baseSpeed;                 //레이저 데이터
         laserData.damage = laserData.baseDamage;
         laserData.attackDelay = laserData.baseAttackDelay;
         laserData.baseDuration = laserData.duration;
         laserData.count = laserData.baseCount;
-        //블래스트 데이터
-        blastData.range = blastData.baseRange;
+        
+        blastData.range = blastData.baseRange;                 //블래스트 데이터
         blastData.speed = blastData.baseSpeed;
         blastData.damage = blastData.baseDamage;
         blastData.attackDelay = blastData.baseAttackDelay;
         blastData.critical = blastData.baseCritical;
         blastData.criticalDamage = blastData.baseCriticalDamage;
         blastData.count = blastData.baseCount;
-        //장판 데이터
-        floorData.range = floorData.baseRange;
+       
+        floorData.range = floorData.baseRange;                 //장판 데이터
         floorData.damage = floorData.baseDamage;
         floorData.attackDelay = floorData.baseAttackDelay;
         floorData.slow = floorData.baseSlow;
         floorData.decrease = floorData.baseDecrease;
-        //플레이어 데이터터
-        playerData.maxHp = playerData.baseHp;
+       
+        playerData.maxHp = playerData.baseHp;                  //플레이어 데이터
         playerData.hp = playerData.baseHp;
         playerData.defense = playerData.baseDefense;
         playerData.offense = playerData.baseOffense;
@@ -215,21 +213,220 @@ public class LevelUpScript : MonoBehaviour
         playerData.isTrueDamage = playerData.baseIsTrueDamage;
         playerData.critical = playerData.baseCritical;
     }
-
-    //무기 별로 자식 오브젝트에 있는 능력을 각 무기의 배열에 넣는 작업
-    void SetStatWeapon()
+    
+    void SetStatWeapon()                                                                  //무기 별로 자식 오브젝트에 있는 능력을 각 무기의 배열에 넣기기
     {
-        //미사일 능력 설정
+
         for (int i = 0; i < missileWeapon.transform.childCount; i++)
         {
             missileWeapons[i] = missileWeapon.transform.GetChild(i).gameObject;
         }
-        //마법검 능력 설정
         for (int i = 0; i < swordWeapon.transform.childCount; i++)
         {
             swordWeapons[i] = swordWeapon.transform.GetChild(i).gameObject;
         }
-        //레이저 능력 설정일
+        for (int i = 0; i < laserWeapon.transform.childCount; i++)
+        {
+            laserWeapons[i] = laserWeapon.transform.GetChild(i).gameObject;
+        }
+        for (int i = 0; i < blastWeapon.transform.childCount; i++)
+        {
+            blastWeapons[i] = blastWeapon.transform.GetChild(i).gameObject;
+        }
+        for (int i = 0; i < floorWeapon.transform.childCount; i++)
+        {
+            floorWeapons[i] = floorWeapon.transform.GetChild(i).gameObject;
+        }
+    }
+    
+    void SetStar()                                                                       //무기 능력 레벨을 표시하는 별 세팅
+    {
+        mStarPanel_0 = missileWeapons[0].transform.GetChild(4).gameObject;
+        mStarPanel_1 = missileWeapons[1].transform.GetChild(4).gameObject;
+        mStarPanel_2 = missileWeapons[2].transform.GetChild(4).gameObject;
+        mStarPanel_3 = missileWeapons[3].transform.GetChild(4).gameObject;
+        mStarPanel_4 = missileWeapons[4].transform.GetChild(4).gameObject;
+
+        for (int i = 0; i < 5; i++)
+        {
+            mStar_0[i] = mStarPanel_0.transform.GetChild(i).gameObject.GetComponent<Image>();
+        }
+        for (int i = 0; i < 5; i++)
+        {
+            mStar_1[i] = mStarPanel_1.transform.GetChild(i).gameObject.GetComponent<Image>();
+        }
+        for (int i = 0; i < 5; i++)
+        {
+            mStar_2[i] = mStarPanel_2.transform.GetChild(i).gameObject.GetComponent<Image>();
+        }
+        for (int i = 0; i < 5; i++)
+        {
+            mStar_3[i] = mStarPanel_3.transform.GetChild(i).gameObject.GetComponent<Image>();
+        }
+        for (int i = 0; i < 5; i++)
+        {
+            mStar_4[i] = mStarPanel_4.transform.GetChild(i).gameObject.GetComponent<Image>();
+        }
+
+        sStarPanel_0 = swordWeapons[0].transform.GetChild(4).gameObject;
+        sStarPanel_1 = swordWeapons[1].transform.GetChild(4).gameObject;
+        sStarPanel_2 = swordWeapons[2].transform.GetChild(4).gameObject;
+        sStarPanel_3 = swordWeapons[3].transform.GetChild(4).gameObject;
+        sStarPanel_4 = swordWeapons[4].transform.GetChild(4).gameObject;
+
+        for (int i = 0; i < 4; i++)
+        {
+            sStar_0[i] = sStarPanel_0.transform.GetChild(i).gameObject.GetComponent<Image>();
+        }
+        for (int i = 0; i < 5; i++)
+        {
+            sStar_1[i] = sStarPanel_1.transform.GetChild(i).gameObject.GetComponent<Image>();
+        }
+        for (int i = 0; i < 5; i++)
+        {
+            sStar_2[i] = sStarPanel_2.transform.GetChild(i).gameObject.GetComponent<Image>();
+        }
+        for (int i = 0; i < 5; i++)
+        {
+            sStar_3[i] = sStarPanel_3.transform.GetChild(i).gameObject.GetComponent<Image>();
+        }
+        for (int i = 0; i < 1; i++)
+        {
+            sStar_4[i] = sStarPanel_4.transform.GetChild(i).gameObject.GetComponent<Image>();
+        }
+
+        lStarPanel_0 = laserWeapons[0].transform.GetChild(4).gameObject;
+        lStarPanel_1 = laserWeapons[1].transform.GetChild(4).gameObject;
+        lStarPanel_2 = laserWeapons[2].transform.GetChild(4).gameObject;
+        lStarPanel_3 = laserWeapons[3].transform.GetChild(4).gameObject;
+
+        for (int i = 0; i < 5; i++)
+        {
+            lStar_0[i] = lStarPanel_0.transform.GetChild(i).gameObject.GetComponent<Image>();
+        }
+        for (int i = 0; i < 5; i++)
+        {
+            lStar_1[i] = lStarPanel_1.transform.GetChild(i).gameObject.GetComponent<Image>();
+        }
+        for (int i = 0; i < 5; i++)
+        {
+            lStar_2[i] = lStarPanel_2.transform.GetChild(i).gameObject.GetComponent<Image>();
+        }
+        for (int i = 0; i < 5; i++)
+        {
+            lStar_3[i] = lStarPanel_3.transform.GetChild(i).gameObject.GetComponent<Image>();
+        }
+
+        bStarPanel_0 = blastWeapons[0].transform.GetChild(4).gameObject;
+        bStarPanel_1 = blastWeapons[1].transform.GetChild(4).gameObject;
+        bStarPanel_2 = blastWeapons[2].transform.GetChild(4).gameObject;
+        bStarPanel_3 = blastWeapons[3].transform.GetChild(4).gameObject;
+        bStarPanel_4 = blastWeapons[4].transform.GetChild(4).gameObject;
+
+        for (int i = 0; i < 5; i++)
+        {
+            bStar_0[i] = bStarPanel_0.transform.GetChild(i).gameObject.GetComponent<Image>();
+        }
+        for (int i = 0; i < 5; i++)
+        {
+            bStar_1[i] = bStarPanel_1.transform.GetChild(i).gameObject.GetComponent<Image>();
+        }
+        for (int i = 0; i < 5; i++)
+        {
+            bStar_2[i] = bStarPanel_2.transform.GetChild(i).gameObject.GetComponent<Image>();
+        }
+        for (int i = 0; i < 5; i++)
+        {
+            bStar_3[i] = bStarPanel_3.transform.GetChild(i).gameObject.GetComponent<Image>();
+        }
+        for (int i = 0; i < 5; i++)
+        {
+            bStar_4[i] = bStarPanel_4.transform.GetChild(i).gameObject.GetComponent<Image>();
+        }
+
+        fStarPanel_0 = floorWeapons[0].transform.GetChild(4).gameObject;
+        fStarPanel_1 = floorWeapons[1].transform.GetChild(4).gameObject;
+        fStarPanel_2 = floorWeapons[2].transform.GetChild(4).gameObject;
+        fStarPanel_3 = floorWeapons[3].transform.GetChild(4).gameObject;
+
+        for (int i = 0; i < 5; i++)
+        {
+            fStar_0[i] = fStarPanel_0.transform.GetChild(i).gameObject.GetComponent<Image>();
+        }
+        for (int i = 0; i < 5; i++)
+        {
+            fStar_1[i] = fStarPanel_1.transform.GetChild(i).gameObject.GetComponent<Image>();
+        }
+        for (int i = 0; i < 5; i++)
+        {
+            fStar_2[i] = fStarPanel_2.transform.GetChild(i).gameObject.GetComponent<Image>();
+        }
+        for (int i = 0; i < 5; i++)
+        {
+            fStar_3[i] = fStarPanel_3.transform.GetChild(i).gameObject.GetComponent<Image>();
+        }
+    }
+
+    public void WeaponsArr()
+    {
+        i = 0;
+
+        if (missile_Lv_0 < 5)
+        {
+            tempWeapons[i] = missileWeapons[0];
+            i++;
+        }
+        if (missile_Lv_1 < 5)
+        {
+            tempWeapons[i] = missileWeapons[1];
+            i++;
+        }
+        if (missile_Lv_2 < 5)
+        {
+            tempWeapons[i] = missileWeapons[2];
+            i++;
+        }
+        if (missile_Lv_3 < 5)
+        {
+            tempWeapons[i] = missileWeapons[3];
+            i++;
+        }
+        if (missile_Lv_4 < 5)
+        {
+            tempWeapons[i] = missileWeapons[4];
+            i++;
+        }
+
+        if (isSword)
+        {
+            if (sword_Lv_0 < 4)
+            {
+                tempWeapons[i] = swordWeapons[0];
+                i++;
+            }
+            if (sword_Lv_1 < 5)
+            {
+                tempWeapons[i] = swordWeapons[1];
+                i++;
+            }
+            if (sword_Lv_2 < 5 && sword_Lv_4 == 0)
+            {
+                tempWeapons[i] = swordWeapons[2];
+                i++;
+            }
+            if (sword_Lv_3 < 5)
+            {
+                tempWeapons[i] = swordWeapons[3];
+                i++;
+            }
+            if (sword_Lv_4 < 1 && sword_Lv_2 == 0)
+            {
+                tempWeapons[i] = swordWeapons[4];
+                i++;
+            }
+        }
+        else if (!isSword)
+        {
             tempWeapons[i] = unlockWeapons[0];
             i++;
         }
@@ -325,36 +522,36 @@ public class LevelUpScript : MonoBehaviour
             tempWeapons[i] = unlockWeapons[3];
             i++;
         }
-       
-        weapons = new GameObject[3];                                     //무기 능력 선택에 쓸 배열
-        n = Random.Range(0, i);                                          //배열 인덱스로 쓰일 n 값을 랜덤으로 0~i 사이 값으로 설정
-        
-        weapons[0] = tempWeapons[n];                                     //배열에 무작위 무기 능력을 넣기
-        tempW_0 = weapons[0].transform.parent.gameObject;                //무작위 무기 능력의 부모를 임시로 tempW_0에 넣는다 -> 나중에 부모를 변경한 뒤에 다시 돌려놓기 위함
-        weapons[0].transform.SetParent(weaponPanel.transform);           //해당 무기 능력의 부모 변경
-        weapons[0].transform.localPosition = new Vector3(-720, 0, 0);    //무기 능력 선택 카드의 위치 조정
-        weapons[0].SetActive(true);                                      //무기 능력 카드 상태 활성화
+
+        weapons = new GameObject[3];                            //무기 능력 선택에 쓸 배열
+
+        n = Random.Range(0, i);                         //배열 인덱스로 쓰일 n 값을 랜덤으로 0~i 사이 값으로 설정
+        weapons[0] = tempWeapons[n];//배열에 무작위 무기 능력을 넣기
+        tempW_0 = weapons[0].transform.parent.gameObject;//무작위 무기 능력의 부모를 임시로 tempW_0에 넣는다 -> 나중에 부모를 변경한 뒤에 다시 돌려놓기 위함
+        weapons[0].transform.SetParent(weaponPanel.transform);//해당 무기 능력의 부모 변경
+        weapons[0].transform.localPosition = new Vector3(-720, 0, 0);//무기 능력 선택 카드의 위치 조정
+        weapons[0].SetActive(true);//무기 능력 카드 상태 활성화
 
         n = Random.Range(0, i);
         weapons[1] = tempWeapons[n];
-        while (weapons[0] == weapons[1])                                 //첫번째와 두번째 능력이 같을 경우 다른 능력이 선택될 때까지 반복문 실행
+        while (weapons[0] == weapons[1])
         {
             n = Random.Range(0, i);
             weapons[1] = tempWeapons[n];
         }
-        tempW_1 = weapons[1].transform.parent.gameObject;                //이후 아래는 위와 동일
+        tempW_1 = weapons[1].transform.parent.gameObject;
         weapons[1].transform.SetParent(weaponPanel.transform);
         weapons[1].transform.localPosition = new Vector3(0, 0, 0);
         weapons[1].SetActive(true);
 
         n = Random.Range(0, i);
         weapons[2] = tempWeapons[n];
-        while (weapons[0] == weapons[2] || weapons[1] == weapons[2])
+        while (weapons[0] == weapons[2] || weapons[1] == weapons[2]) //첫번째와 두번째 능력이 같을 경우 다른 능력이 선택될 때까지 반복문 실행
         {
             n = Random.Range(0, i);
             weapons[2] = tempWeapons[n];
         }
-        tempW_2 = weapons[2].transform.parent.gameObject;
+        tempW_2 = weapons[2].transform.parent.gameObject;//이후 아래는 위와 동일
         weapons[2].transform.SetParent(weaponPanel.transform);
         weapons[2].transform.localPosition = new Vector3(720, 0, 0);
         weapons[2].SetActive(true);
