@@ -4,16 +4,13 @@ using UnityEngine;
 
 public class PlayerScript : MonoBehaviour
 {
-    //public PlayerData playerData;
     public LevelUpScript levelUpScript;
     [SerializeField]
     GameManager gameManager;
     [SerializeField]
     Scanner scanner;
     [SerializeField]
-    WeaponScript weaponScript;
-    //[SerializeField]
-    //Weapon[] weapon;
+    WeaponScript weaponScript
     public SoundManager soundManager;
 
     private Rigidbody2D rb;
