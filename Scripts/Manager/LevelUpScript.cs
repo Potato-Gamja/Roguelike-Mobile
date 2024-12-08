@@ -598,7 +598,7 @@ public class LevelUpScript : MonoBehaviour
             floor.SetActive(true);                             //장판 활성화
     }
 
-    public void WeaponSelectEvent_0()                              //무기 능력 선택 이벤트
+    public void WeaponSelectEvent_0()                              //무기 능력 선택 활성화 이벤트
     {
         isWeapon = true;                                           //무기 능력 선택 이벤트 활성화 여부
         pasue.interactable = false;                                //일시정지 버튼 기능 비활성화
@@ -610,7 +610,20 @@ public class LevelUpScript : MonoBehaviour
         reroll.interactable = true;                                //리롤 버튼 기능 활성화
         rerollImage.color = new Color32(52, 255, 0, 255);          //리롤 버튼 이미지의 컬러 값 기존대로 변경
     }
-
+    
+    public void WeaponSelectEvent_1()                             //
+    {
+        if (!isStat)
+        {
+            gameManager.joystick.SetActive(true);
+            TimeSlowUp();
+        }
+        joystick.handle.anchoredPosition = Vector2.zero;
+        joystick.input = Vector2.zero;
+        weaponPanel.SetActive(false);
+        isWeapon = false;
+    }
+    
     public void TimeSlowUp()                                       //무기 능력 선택 이벤트 후 천천히 정지 상태 풀리기
     {
         if (Time.timeScale <= 1)                                   //타임스케일이 1과 같거나 작을 때 실행
