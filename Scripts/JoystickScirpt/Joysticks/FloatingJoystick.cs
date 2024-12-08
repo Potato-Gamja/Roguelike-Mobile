@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 
 public class FloatingJoystick : Joystick
 {
-    int activePointerId_ = -1;
+    int activePointerId_ = -1;                //중복터치를 방지하기 위한 포인터 아이디
     
     protected override void Start()
     {
@@ -15,7 +15,7 @@ public class FloatingJoystick : Joystick
 
     public override void OnPointerDown(PointerEventData eventData)
     {
-        if (activePointerId_ == -1)
+        if (activePointerId_ == -1)            //중복터치를 방지하기 위한 조건문
         {
             activePointerId_ = eventData.pointerId;
             background.anchoredPosition = ScreenPointToAnchoredPosition(eventData.position);
@@ -29,7 +29,7 @@ public class FloatingJoystick : Joystick
         if (eventData.pointerId == activePointerId_)
         {
             background.gameObject.SetActive(false);
-            activePointerId_ = -1;
+            activePointerId_ = -1;                //터치가 가능하게 포인터 아이디 값을 변경
             base.OnPointerUp(eventData);
         }
     }
