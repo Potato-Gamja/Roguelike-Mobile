@@ -611,17 +611,14 @@ public class LevelUpScript : MonoBehaviour
         rerollImage.color = new Color32(52, 255, 0, 255);          //리롤 버튼 이미지의 컬러 값 기존대로 변경
     }
     
-    public void WeaponSelectEvent_1()                             //
+    public void WeaponSelectEvent_1()                              //무기 능력 선택 비활성화 이벤트
     {
-        if (!isStat)
-        {
-            gameManager.joystick.SetActive(true);
-            TimeSlowUp();
-        }
-        joystick.handle.anchoredPosition = Vector2.zero;
-        joystick.input = Vector2.zero;
-        weaponPanel.SetActive(false);
-        isWeapon = false;
+        gameManager.joystick.SetActive(true);                      //조이스틱 활성화
+        TimeSlowUp();                                              //타임스케일 1로 하는 함수
+        joystick.handle.anchoredPosition = Vector2.zero;           //조이스틱 핸들의 위치 초기화
+        joystick.input = Vector2.zero;                             //조이스틱의 입력값 초기화
+        weaponPanel.SetActive(false);                              //무기 능력 선택 판넬 비활성화
+        isWeapon = false;                                          //무기 능력 선택 이벤트 활성화 여부
     }
     
     public void TimeSlowUp()                                       //무기 능력 선택 이벤트 후 천천히 정지 상태 풀리기
