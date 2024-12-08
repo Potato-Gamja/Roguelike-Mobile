@@ -8,61 +8,25 @@ public class GameManager : MonoBehaviour
     public SoundManager SoundManager;
     public PlayerScript playerScript;
     public LevelUpScript levelUpScript;
-    [SerializeField]
-    MonManager monManager;
+    public MonManager monManager;
 
-    public Sprite[] damageSprite;
+    public Sprite[] damageSprite;        //데미지 표시를 위한 스프라이트
 
-    public GameObject[] weapon;
-    public int weaponType;
-
-    float monTime = 0;
-    int monCount = 0;
-    float spawnTime = 0;
     public bool isSpawn = true;
-    public bool isOver = false;
-
-    [SerializeField]
-    Image expBar;
-    float curExp = 0;
-    float maxExp;
-    float exExp = 0;
-
-    [SerializeField]
-    Text levelText;
-    int playerLevel = 1;
-
-
-    public Slider bgmSlider;
-    public Slider sfxSlider;
-
-    public Image hpBar;
-    bool isDead = false;
-
-    [SerializeField]
-    public int wave = 0;
-
-    AudioMixerScript mixer;
-
-    [SerializeField]
-    Text timerText;
+    public bo트
     public int time = 0;
 
     public GameObject joystick;
     public FloatingJoystick floatJoystick;
 
-    public Dropdown languageDown;
-    public GameObject settingPanel;
-    public GameObject gameoverPanel;
-    
-    public Text expText;
-    public Text hpText;
-    public Text defenseText;
-    public Text offenseText;
-    public Text attackdelayText;
-    public Text speedText;
-    public Text criticalText;
-    bool isClick = false;
+    [SerializeField]
+    Dropdown languageDown;                //로컬라이제이션 드롭다운
+    [SerializeField]
+    GameObject settingPanel;              //설정창
+    [SerializeField]
+    GameObject gameoverPanel;             //게임오버창
+
+    bool isClick = false;                 //정지버튼 눌렀는지 여부 체크
 
     public Text kill_;
     public Text time_;
