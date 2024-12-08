@@ -5,12 +5,11 @@ public class LevelUpScript : MonoBehaviour
 {
     public GameManager gameManager;
     public Joystick joystick;
-    [SerializeField]
-    Button pasue;
     public PlayerScript playerScript;
     public PlayerData playerData;
     public GameObject[] sword;
     public GameObject fade;
+    public Button pasue;
 
     [Header("Weapon")]
     public GameObject weaponPanel;
