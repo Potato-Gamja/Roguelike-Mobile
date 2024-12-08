@@ -33,17 +33,12 @@ public class DataManager : MonoBehaviour
             instance = this;
         else if (instance != this)
             Destroy(instance.gameObject);
-        path = Application.persistentDataPath + "/Data.json"; //경로 수정 필요?
+        path = Application.persistentDataPath + "/Data.json";
         LoadData();
         
-        //DontDestroyOnLoad(this.gameObject);
+        DontDestroyOnLoad(this.gameObject);
 
 
-    }
-
-    void Update()
-    {
-        //SaveData();
     }
 
     public void SaveData()
