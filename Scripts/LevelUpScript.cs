@@ -18,18 +18,6 @@ public class LevelUpScript : MonoBehaviour
     public GameObject[] sword;
     public GameObject fade;
 
-    [Header("Stat")]
-    public GameObject statPanel;
-    public GameObject[] tempStats;
-    public GameObject[] stats;
-
-    public GameObject defaultStat;
-    public GameObject buffStat;
-    public GameObject debuffStat;
-    public GameObject[] defaultStats;
-    public GameObject[] buffStats;
-    public GameObject[] debuffStats;
-
     [Header("Weapon")]
     public GameObject weaponPanel;
     public GameObject[] tempWeapons;
@@ -46,7 +34,6 @@ public class LevelUpScript : MonoBehaviour
     public GameObject[] floorWeapons;
 
     public GameObject[] unlockWeapons;
-
 
     [Header("Data")]
 
@@ -411,49 +398,6 @@ public class LevelUpScript : MonoBehaviour
             fStar_3[i] = fStarPanel_3.transform.GetChild(i).gameObject.GetComponent<Image>();
         }
     }
-    public void StatsArr()
-    {
-        ii = 0;
-        for (int j = 0; j < defaultStats.Length; j++)
-        {
-            tempStats[j] = defaultStats[j];
-            ii++;
-        }
-        for (int j = 0; j < buffStats.Length; j++)
-        {
-            tempStats[j + defaultStats.Length] = buffStats[j];
-            ii++;
-        }
-        stats = new GameObject[4];
-
-        n = Random.Range(0, defaultStats.Length);
-        stats[0] = tempStats[n];
-        tempS_0 = stats[0].transform.parent.gameObject;
-        stats[0].transform.SetParent(statPanel.transform);
-        stats[0].transform.localPosition = new Vector3(-680, 0, 0);
-
-        n = Random.Range(0, defaultStats.Length);
-        stats[1] = tempStats[n];
-        while (stats[0] == stats[1])
-        {
-            n = Random.Range(0, defaultStats.Length);
-            stats[1] = tempStats[n];
-        }
-        tempS_1 = stats[1].transform.parent.gameObject;
-        stats[1].transform.SetParent(statPanel.transform);
-        stats[1].transform.localPosition = new Vector3(0, 0, 0);
-
-        n = Random.Range(defaultStats.Length, defaultStats.Length + buffStats.Length);
-        stats[2] = tempStats[n];
-        while (stats[0] == stats[2] || stats[1] == stats[2])
-        {
-            n = Random.Range(defaultStats.Length, defaultStats.Length + buffStats.Length);
-            stats[2] = tempStats[n];
-        }
-        tempS_2 = stats[2].transform.parent.gameObject;
-        stats[2].transform.SetParent(statPanel.transform);
-        stats[2].transform.localPosition = new Vector3(680, 0, 0);
-    }
 
     public void WeaponsArr()
     {
@@ -653,15 +597,6 @@ public class LevelUpScript : MonoBehaviour
         weapons[2].transform.SetParent(tempW_2.transform);
     }
 
-    public void RelocationStats()
-    {
-        stats[0].transform.SetParent(tempS_0.transform);
-        stats[1].transform.SetParent(tempS_1.transform);
-        stats[2].transform.SetParent(tempS_2.transform);
-        //stats[3].transform.SetParent(tempS_3.transform);
-        //stats[4].transform.SetParent(tempS_4.transform);
-    }
-
     public void ReArr_Weapons()
     {
         weapons[0].transform.SetParent(tempW_0.transform);
@@ -680,17 +615,6 @@ public class LevelUpScript : MonoBehaviour
         reroll.interactable = false;
         rerollImage.color = new Color32(52, 255, 0, 60);
         WeaponsArr();
-    }
-
-    public void ReArr_Stats()
-    {
-        stats[0].transform.SetParent(tempS_0.transform);
-        stats[1].transform.SetParent(tempS_1.transform);
-        stats[2].transform.SetParent(tempS_2.transform);
-        //stats[3].transform.SetParent(tempS_3.transform);
-        //stats[4].transform.SetParent(tempS_4.transform);
-
-        StatsArr();
     }
 
     public void UnlockWeapons_0()
