@@ -73,8 +73,6 @@ public class GameManager : MonoBehaviour
     {    
         //최대 경험치 설정
         maxExp = playerScript.exp;
-        //플레이어 데이터 설정
-        playerScript.SetData();
     }
 
     void Start()
