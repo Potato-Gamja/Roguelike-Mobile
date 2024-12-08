@@ -1,11 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
-using Unity.Mathematics;
-
-using Random = UnityEngine.Random;
 
 public class LevelUpScript : MonoBehaviour
 {
