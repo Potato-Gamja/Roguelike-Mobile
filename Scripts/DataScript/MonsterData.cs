@@ -1,6 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "MonData", menuName = "Scriptble Object/MonData")]
+//에셋메뉴를 만들어 무기 데이터를 관리
 
 public class MonsterData : ScriptableObject
 {
