@@ -1,7 +1,4 @@
-using System;
 using System.IO;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Assets.PixelFantasy.PixelHeroes.Common.Scripts.CharacterScripts;    //픽셀 판타지 에셋에 있는 캐릭터 빌드 스크립트
 
