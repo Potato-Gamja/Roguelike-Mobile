@@ -14,8 +14,6 @@ public class CameraScript : MonoBehaviour
     void Start()
     {
         player = GameObject.FindWithTag("Player").GetComponent<Transform>();
-        //Screen.SetResolution(1080, 1920, true);
-        //SetResolution();
     }
 
     void Update()
