@@ -25,7 +25,6 @@ public class LevelUpScript : MonoBehaviour
     public GameObject[] laserWeapons;
     public GameObject[] blastWeapons;
     public GameObject[] floorWeapons;
-
     public GameObject[] unlockWeapons;
     
     [Header("Data")]                                  //무기 데이터
@@ -602,49 +601,45 @@ public class LevelUpScript : MonoBehaviour
     public void WeaponSelectEvent_0()                              //무기 능력 선택 이벤트
     {
         isWeapon = true;                                           //무기 능력 선택 이벤트 활성화 여부
-        
-        pasue.interactable = false;
-        Time.timeScale = 0.0f;
-        gameManager.joystick.SetActive(false);
-        WeaponsArr();
-        fade.SetActive(true);
-        weaponPanel.SetActive(true);
-        reroll.interactable = true;
-        rerollImage.color = new Color32(52, 255, 0, 255);
+        pasue.interactable = false;                                //일시정지 버튼 기능 비활성화
+        Time.timeScale = 0.0f;                                     //타임스케일을 0으로 하여 정지상태
+        gameManager.joystick.SetActive(false);                     //조이스틱 비활성화
+        WeaponsArr();                                              //무작위 무기 능력 정하기
+        fade.SetActive(true);                                      //페이드 활성화
+        weaponPanel.SetActive(true);                               //무기 능력 선택 판넬 활성화
+        reroll.interactable = true;                                //리롤 버튼 기능 활성화
+        rerollImage.color = new Color32(52, 255, 0, 255);          //리롤 버튼 이미지의 컬러 값 기존대로 변경
     }
 
-    public void TimeSlowUp()
+    public void TimeSlowUp()                                       //무기 능력 선택 이벤트 후 천천히 정지 상태 풀리기
     {
-        if (Time.timeScale <= 1)
+        if (Time.timeScale <= 1)                                   //타임스케일이 1과 같거나 작을 때 실행
         {
-            if (fade.activeSelf == false)
+            if (fade.activeSelf == false)                          //페이드 비활성화
                 fade.SetActive(true);
 
-            pasue.interactable = true;
+            pasue.interactable = true;                             //일시정지 버튼 기능 활성화
 
-            time += 0.15f;
-            Time.timeScale += time;
+            time += 0.15f;                                         //가속적으로 일시정지가 해제하기 위한 연산
+            Time.timeScale += time;                                //타임스케일의 값을 타임만큼 더하여 시간을 흐르게 하기
 
-            if (Time.timeScale >= 1)
+            if (Time.timeScale >= 1)                               //타임스케일의 값이 1과 같거나 1보다 클 경우 실행
             {
-                fade.SetActive(false);
-                Time.timeScale = 1.0f;
-                time = 0;
-                statPanel.SetActive(false);
-                weaponPanel.SetActive(false);
-                return;
+                fade.SetActive(false);                             //페이드 비활성화
+                Time.timeScale = 1.0f;                             //정상적인 게임속도를 위해 타임스케일에 1 대입
+                time = 0;                                          //타임 값 0으로 초기화
+                weaponPanel.SetActive(false);                      //무기 능력 선택 판넬 비활성화
+                return;                                            //리턴
             }
             else
-                Invoke("TimeSlowUp", 0.06f);
+                Invoke("TimeSlowUp", 0.06f);                       //인보크로 타임슬로우업을 0.06초의 딜레이를 가지고 실행
         }
     }
 
-    //미사일 능력력
-    public void MissileEvent_0()
+    public void MissileEvent_0()                                              //미사일 능력
     {
-        missileData.damage += (missileData.baseDamage / 100) * 30;
-        mStar_0[missile_Lv_0].sprite = starSprite;
-        playerScript.SetData();
+        missileData.damage += (missileData.baseDamage / 100) * 30;            //미사일 데미지 증가
+        mStar_0[missile_Lv_0].sprite = starSprite;                            //미사일 능력의 별 이미지 변경
         missile_Lv_0++;
     }
     public void MissileEvent_1()
@@ -676,8 +671,7 @@ public class LevelUpScript : MonoBehaviour
         missile_Lv_4++;
     }
 
-    //마법검 능력
-    public void SwordEvent_0()
+    public void SwordEvent_0()                                                //마법검 능력
     {
         sword[swordCount].SetActive(false);
         swordData.damage -= (swordData.baseDamage / 100) * 10;
@@ -719,31 +713,31 @@ public class LevelUpScript : MonoBehaviour
     //레이저 능력
     public void LaserEvent_0()
     {
-        laserData.count -= 2;                                                //레이저 타격 회수 감소
-        laserData.damage += (laserData.baseDamage / 100) * 60;               //레이저 데미지 증가
-        laserData.attackDelay -= (laserData.baseAttackDelay / 100) * 6;      //레이저 쿨타임 감소
-        lStar_0[laser_Lv_0].sprite = starSprite;                             //레이저 능력의 별 이미지 변경
-        laser_Lv_0++;                                                        //해당 레이저 레벨 증가
+        laserData.count -= 2;                                                 //레이저 타격 회수 감소
+        laserData.damage += (laserData.baseDamage / 100) * 60;                //레이저 데미지 증가
+        laserData.attackDelay -= (laserData.baseAttackDelay / 100) * 6;       //레이저 쿨타임 감소
+        lStar_0[laser_Lv_0].sprite = starSprite;                              //레이저 능력의 별 이미지 변경
+        laser_Lv_0++;                                                         //해당 레이저 레벨 증가
     }
     public void LaserEvent_1()
     {
-        laserData.count += 6;                                                //레이저 타격 회수 증가
-        laserData.damage += (laserData.baseDamage / 100) * 20;               //레이저 데미지 증가
-        laserData.attackDelay += (laserData.baseAttackDelay / 100) * 4;      //레이저 쿨타임 증가
+        laserData.count += 6;                                                 //레이저 타격 회수 증가
+        laserData.damage += (laserData.baseDamage / 100) * 20;                //레이저 데미지 증가
+        laserData.attackDelay += (laserData.baseAttackDelay / 100) * 4;       //레이저 쿨타임 증가
         lStar_1[laser_Lv_1].sprite = starSprite;
         laser_Lv_1++;
     }
     public void LaserEvent_2()
     {
-        laserData.count -= 1;                                                //레이저 타격 회수 감소
-        laserData.attackDelay -= (laserData.baseAttackDelay / 100) * 8;      //레이저 쿨타임 감소
+        laserData.count -= 1;                                                 //레이저 타격 회수 감소
+        laserData.attackDelay -= (laserData.baseAttackDelay / 100) * 8;       //레이저 쿨타임 감소
         lStar_2[laser_Lv_2].sprite = starSprite;
         laser_Lv_2++;
     }
     public void LaserEvent_3()
     {
-        laserData.count += 3;                                                //레이저 타격 회수 증가
-        laserData.attackDelay += (laserData.baseAttackDelay / 100) * 2;      //레이저 쿨타임 증가
+        laserData.count += 3;                                                 //레이저 타격 회수 증가
+        laserData.attackDelay += (laserData.baseAttackDelay / 100) * 2;       //레이저 쿨타임 증가
         lStar_3[laser_Lv_3].sprite = starSprite;
         laser_Lv_3++;
     }
