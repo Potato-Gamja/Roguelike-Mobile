@@ -11,6 +11,7 @@ public class LevelUpScript : MonoBehaviour
     public GameObject fade;
     public Button pasue;
 
+    //무기와 무기 능력 선택 카드
     [Header("Weapon")]
     public GameObject weaponPanel;
     public GameObject[] tempWeapons;
@@ -28,8 +29,8 @@ public class LevelUpScript : MonoBehaviour
 
     public GameObject[] unlockWeapons;
 
+    //무기 데이터
     [Header("Data")]
-
     public WeaponData missileData;
     public WeaponData swordData;
     public WeaponData laserData;
@@ -43,6 +44,7 @@ public class LevelUpScript : MonoBehaviour
     public Weapon floorW;
     public Sprite starSprite;
 
+    //무기 능력 레벨을 표시하는 별
     GameObject mStarPanel_0;
     GameObject mStarPanel_1;
     GameObject mStarPanel_2;
@@ -107,6 +109,7 @@ public class LevelUpScript : MonoBehaviour
     public bool isBlast = false;
     public bool isFloor = false;
 
+    //무기 능력 별 레벨
     int missile_Lv_0 = 0;
     int missile_Lv_1 = 0;
     int missile_Lv_2 = 0;
@@ -142,23 +145,14 @@ public class LevelUpScript : MonoBehaviour
     int ii;
     int n;
 
-    GameObject tempS_0;
-    GameObject tempS_1;
-    GameObject tempS_2;
-    GameObject tempS_3;
-    GameObject tempS_4;
-    GameObject tempS_5;
-
+    //임시로 무기 능력을 저장하는 오브젝트트
     GameObject tempW_0;
     GameObject tempW_1;
     GameObject tempW_2;
 
-    [SerializeField]
-    GameObject weaponGroup;
-    [SerializeField]
-    Button reroll;
-    [SerializeField]
-    Image rerollImage;
+    public GameObject weaponGroup;
+    public Button reroll;            //리롤버튼
+    public Image rerollImage;        //리롤버튼 이미지
 
     public MonManager monManager;
     public float monHp;
@@ -262,10 +256,9 @@ public class LevelUpScript : MonoBehaviour
 
 
     }
+    
     void SetStar()
     {
-        //Image star = starPanel.transform.GetChild(missile_Lv_0).GetComponent<Image>();
-
         mStarPanel_0 = missileWeapons[0].transform.GetChild(4).gameObject;
         mStarPanel_1 = missileWeapons[1].transform.GetChild(4).gameObject;
         mStarPanel_2 = missileWeapons[2].transform.GetChild(4).gameObject;
