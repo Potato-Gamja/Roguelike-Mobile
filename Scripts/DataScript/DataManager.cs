@@ -71,8 +71,8 @@ public class DataManager : MonoBehaviour
         }
         else                                                     //경로에 데이터가 저장되어있다면 해당 데이터를 읽기
         {
-            string json = File.ReadAllText(path);
-            saveData = JsonUtility.FromJson<SaveData>(json);
+            string json = File.ReadAllText(path);                //파일의 텍스트를 문자열로 저장
+            saveData = JsonUtility.FromJson<SaveData>(json);     //제이슨 데이터를 역직렬화하여 세이브 데이터에 넣기
         }
     }
 }
