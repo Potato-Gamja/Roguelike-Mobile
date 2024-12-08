@@ -45,7 +45,7 @@ public class DataManager : MonoBehaviour
     {
         string json = JsonUtility.ToJson(saveData, true);        //세이브 데이터를 제이슨 형태로 포멧팅한 문자열을 생성
 
-        if (File.Exists(path))
+        if (File.Exists(path))                                   //새로 데이터를 저장할 경우 오류가 발생하지 않게 경로에 데이터가 있는지 체크
         {
             saveData.hair = builder.Hair;
             saveData.armor = builder.Armor;
