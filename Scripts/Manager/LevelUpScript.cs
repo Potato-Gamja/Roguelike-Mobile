@@ -217,31 +217,31 @@ public class LevelUpScript : MonoBehaviour
     void SetStatWeapon()                                                                  //무기 별로 자식 오브젝트에 있는 능력을 각 무기의 배열에 넣기기
     {
 
-        for (int i = 0; i < missileWeapon.transform.childCount; i++)
+        for (int i = 0; i < missileWeapon.transform.childCount; i++)                      //미사일 무기 그룹의 자식을 미사일 무기 배열에 순차적으로 추가
         {
             missileWeapons[i] = missileWeapon.transform.GetChild(i).gameObject;
         }
-        for (int i = 0; i < swordWeapon.transform.childCount; i++)
+        for (int i = 0; i < swordWeapon.transform.childCount; i++)                        //마법검 무기 그룹의 자식을 미사일 무기 배열에 순차적으로 추가
         {
             swordWeapons[i] = swordWeapon.transform.GetChild(i).gameObject;
         }
-        for (int i = 0; i < laserWeapon.transform.childCount; i++)
+        for (int i = 0; i < laserWeapon.transform.childCount; i++)                        //레이저 무기 그룹의 자식을 미사일 무기 배열에 순차적으로 추가
         {
             laserWeapons[i] = laserWeapon.transform.GetChild(i).gameObject;
         }
-        for (int i = 0; i < blastWeapon.transform.childCount; i++)
+        for (int i = 0; i < blastWeapon.transform.childCount; i++)                        //블래스트 무기 그룹의 자식을 미사일 무기 배열에 순차적으로 추가
         {
             blastWeapons[i] = blastWeapon.transform.GetChild(i).gameObject;
         }
-        for (int i = 0; i < floorWeapon.transform.childCount; i++)
+        for (int i = 0; i < floorWeapon.transform.childCount; i++)                        //장판 무기 그룹의 자식을 미사일 무기 배열에 순차적으로 추가
         {
             floorWeapons[i] = floorWeapon.transform.GetChild(i).gameObject;
         }
     }
     
-    void SetStar()                                                                       //무기 능력 레벨을 표시하는 별 세팅
+    void SetStar()                                                                                   //무기 능력 레벨을 표시하는 별 세팅
     {
-        mStarPanel_0 = missileWeapons[0].transform.GetChild(4).gameObject;
+        mStarPanel_0 = missileWeapons[0].transform.GetChild(4).gameObject;                           //미사일 무기 자식오브젝트 중 판넬 대입
         mStarPanel_1 = missileWeapons[1].transform.GetChild(4).gameObject;
         mStarPanel_2 = missileWeapons[2].transform.GetChild(4).gameObject;
         mStarPanel_3 = missileWeapons[3].transform.GetChild(4).gameObject;
@@ -249,8 +249,8 @@ public class LevelUpScript : MonoBehaviour
 
         for (int i = 0; i < 5; i++)
         {
-            mStar_0[i] = mStarPanel_0.transform.GetChild(i).gameObject.GetComponent<Image>();
-        }
+            mStar_0[i] = mStarPanel_0.transform.GetChild(i).gameObject.GetComponent<Image>();        //판넬의 자식오브젝트인 별 이미지 컴포넌트를 대입
+        }                                                                                            //이후 아래는 위와 동일
         for (int i = 0; i < 5; i++)
         {
             mStar_1[i] = mStarPanel_1.transform.GetChild(i).gameObject.GetComponent<Image>();
@@ -367,14 +367,14 @@ public class LevelUpScript : MonoBehaviour
         }
     }
 
-    public void WeaponsArr()
+    public void WeaponsArr()                                            
     {
-        i = 0;
+        i = 0;                                                                      //무작위 무기 배열의 최대 인덱스 값으로 쓰일 i에 0을 대입
 
-        if (missile_Lv_0 < 5)
+        if (missile_Lv_0 < 5)                                                       //무기 능력 별로 최대 레벨 달성 시 배열에 추가하지 않기 위한 조건문
         {
             tempWeapons[i] = missileWeapons[0];
-            i++;
+            i++;                                                                    //인덱스 값 i 증가 1
         }
         if (missile_Lv_1 < 5)
         {
@@ -397,8 +397,8 @@ public class LevelUpScript : MonoBehaviour
             i++;
         }
 
-        if (isSword)
-        {
+        if (isSword)                                                               //무기를 잠금해제 했는지 확인하는 조건문
+        {                                                                          //이후 아래는 위와 동일
             if (sword_Lv_0 < 4)
             {
                 tempWeapons[i] = swordWeapons[0];
@@ -523,19 +523,19 @@ public class LevelUpScript : MonoBehaviour
             i++;
         }
 
-        weapons = new GameObject[3];                            //무기 능력 선택에 쓸 배열
+        weapons = new GameObject[3];                                                //무기 능력 선택에 쓸 배열 크기 할당당
 
-        n = Random.Range(0, i);                         //배열 인덱스로 쓰일 n 값을 랜덤으로 0~i 사이 값으로 설정
-        weapons[0] = tempWeapons[n];//배열에 무작위 무기 능력을 넣기
-        tempW_0 = weapons[0].transform.parent.gameObject;//무작위 무기 능력의 부모를 임시로 tempW_0에 넣는다 -> 나중에 부모를 변경한 뒤에 다시 돌려놓기 위함
-        weapons[0].transform.SetParent(weaponPanel.transform);//해당 무기 능력의 부모 변경
-        weapons[0].transform.localPosition = new Vector3(-720, 0, 0);//무기 능력 선택 카드의 위치 조정
-        weapons[0].SetActive(true);//무기 능력 카드 상태 활성화
+        n = Random.Range(0, i);                                                     //배열 인덱스로 쓰일 n 값을 랜덤으로 0~i 사이 값으로 설정
+        weapons[0] = tempWeapons[n];                                                //배열에 무작위 무기 능력을 넣기
+        tempW_0 = weapons[0].transform.parent.gameObject;                           //무작위 무기 능력의 부모를 임시로 tempW_0에 넣는다 -> 나중에 부모를 변경한 뒤에 다시 돌려놓기 위함
+        weapons[0].transform.SetParent(weaponPanel.transform);                      //해당 무기 능력의 부모 변경
+        weapons[0].transform.localPosition = new Vector3(-720, 0, 0);               //무기 능력 선택 카드의 위치 조정
+        weapons[0].SetActive(true);                                                 //무기 능력 카드 상태 활성화
 
         n = Random.Range(0, i);
         weapons[1] = tempWeapons[n];
-        while (weapons[0] == weapons[1])
-        {
+        while (weapons[0] == weapons[1])                                            //첫번째와 두번째 능력이 같을 경우 다른 능력이 선택될 때까지 반복문 실행
+        {                                                                           //이후 아래는 위와 동일
             n = Random.Range(0, i);
             weapons[1] = tempWeapons[n];
         }
@@ -546,68 +546,63 @@ public class LevelUpScript : MonoBehaviour
 
         n = Random.Range(0, i);
         weapons[2] = tempWeapons[n];
-        while (weapons[0] == weapons[2] || weapons[1] == weapons[2]) //첫번째와 두번째 능력이 같을 경우 다른 능력이 선택될 때까지 반복문 실행
+        while (weapons[0] == weapons[2] || weapons[1] == weapons[2])               
         {
             n = Random.Range(0, i);
             weapons[2] = tempWeapons[n];
         }
-        tempW_2 = weapons[2].transform.parent.gameObject;//이후 아래는 위와 동일
+        tempW_2 = weapons[2].transform.parent.gameObject;
         weapons[2].transform.SetParent(weaponPanel.transform);
         weapons[2].transform.localPosition = new Vector3(720, 0, 0);
         weapons[2].SetActive(true);
 
     }
 
-    //부모가 변경된 무기 능력를 기존의 부모로 다시 변경, 능력 선택 시 실행
-    public void RelocationWeapons()
+    public void RelocationWeapons()                                                 //부모가 변경된 무기 능력를 기존의 부모로 다시 변경, 능력 선택 시 실행
     {
         weapons[0].transform.SetParent(tempW_0.transform);
         weapons[1].transform.SetParent(tempW_1.transform);
         weapons[2].transform.SetParent(tempW_2.transform);
     }
     
-    //부모가 변경된 무기 능력를 기존의 부모로 다시 변경, 능력 선택 시 실행
-    public void ReArr_Weapons_Reroll()
+    public void ReArr_Weapons_Reroll()                                             //부모가 변경된 무기 능력를 기존의 부모로 다시 변경, 리롤 버튼을 눌렀을 시 실행
     {
-        weapons[0].transform.SetParent(tempW_0.transform);
+        weapons[0].transform.SetParent(tempW_0.transform);                         //임시로 넣어둔 부모를 다시 불러와 무기 능력의 부모를 원래대로 돌려놓기기
         weapons[1].transform.SetParent(tempW_1.transform);
         weapons[2].transform.SetParent(tempW_2.transform);
 
-        reroll.interactable = false;
-        rerollImage.color = new Color32(52, 255, 0, 60);
+        reroll.interactable = false;                                               //리롤 버튼 기능 비활성화
+        rerollImage.color = new Color32(52, 255, 0, 60);                           //리롤 비활성화 표시를 위한 버튼 이미지의 컬러 값 변경
         WeaponsArr();
     }
 
-    public void UnlockWeapons_0()
+    public void UnlockWeapons_0()                              //마법검 잠금해제
     {
-        isSword = true;
-        sword[0].SetActive(true);
-        playerScript.soundManager.PlaySwordSound();
+        isSword = true;                                        //마법검 활성화 여부
+        sword[0].SetActive(true);                              //마법검 활성화
+        playerScript.soundManager.PlaySwordSound();            //마법검 사운드 재생
     }
-    public void UnlockWeapons_1()
+    public void UnlockWeapons_1()                              //레이저 잠금해제
     {
-        isLaser = true;
-        laserOrb.SetActive(true);
-        laser.SetActive(true);
+        isLaser = true;                                        //레이저 활성화 여부
+        laserOrb.SetActive(true);                              //레이저오브 활성화
+        laser.SetActive(true);                                 //레이저 활성화
     }
-    public void UnlockWeapons_2()
+    public void UnlockWeapons_2()                              //블래스트 잠금해제
     {
-        isBlast = true;
-        blast[0].SetActive(true);
+        isBlast = true;                                        //블래스트 활성화 여부
+        blast[0].SetActive(true);                              //블래스트 활성화
     }
-    public void UnlockWeapons_3()
+    public void UnlockWeapons_3()                              //장판 잠금해제
     {
-        isFloor = true;
-        floor.SetActive(true);
+        isFloor = true;                                        //장판 활성화 여부
+            floor.SetActive(true);                             //장판 활성화
     }
 
-    public void WeaponSelectEvent_0()
+    public void WeaponSelectEvent_0()                              //무기 능력 선택 이벤트
     {
-        isWeapon = true;
-        if (isStat)
-        {
-            return;
-        }
+        isWeapon = true;                                           //무기 능력 선택 이벤트 활성화 여부
+        
         pasue.interactable = false;
         Time.timeScale = 0.0f;
         gameManager.joystick.SetActive(false);
@@ -616,20 +611,6 @@ public class LevelUpScript : MonoBehaviour
         weaponPanel.SetActive(true);
         reroll.interactable = true;
         rerollImage.color = new Color32(52, 255, 0, 255);
-    }
-
-    public void WeaponSelectEvent_1()
-    {
-        if (!isStat)
-        {
-            gameManager.joystick.SetActive(true);
-            TimeSlowUp();
-        }
-        joystick.handle.anchoredPosition = Vector2.zero;
-        joystick.input = Vector2.zero;
-        weaponPanel.SetActive(false);
-        isWeapon = false;
-
     }
 
     public void TimeSlowUp()
