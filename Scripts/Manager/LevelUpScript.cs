@@ -640,78 +640,77 @@ public class LevelUpScript : MonoBehaviour
     {
         missileData.damage += (missileData.baseDamage / 100) * 30;            //미사일 데미지 증가
         mStar_0[missile_Lv_0].sprite = starSprite;                            //미사일 능력의 별 이미지 변경
-        missile_Lv_0++;
+        missile_Lv_0++;                                                       //미사일 레벨 증가
     }
     public void MissileEvent_1()
     {
-        missileData.critical += 8f;
-        missileData.speed -= (missileData.baseSpeed / 100) * 6;
-        mStar_1[missile_Lv_1].sprite = starSprite;
+        missileData.critical += 8f;                                           //미사일 치명타 확률 증가
+        missileData.speed -= (missileData.baseSpeed / 100) * 6;               //미사일 속도 감소
+        mStar_1[missile_Lv_1].sprite = starSprite;                            
         missile_Lv_1++;
     }
     public void MissileEvent_2()
     {
-        missileData.damage -= (missileData.baseDamage / 100) * 8;
-        missileData.count += 1;
+        missileData.damage -= (missileData.baseDamage / 100) * 8;             //미사일 데미지 감소
+        missileData.count += 1;                                               //미사일 관통 수치 증가
         mStar_2[missile_Lv_2].sprite = starSprite;
         missile_Lv_2++;
     }
     public void MissileEvent_3()
     {
-        missileData.speed += (missileData.baseSpeed / 100) * 10;
-        missileData.attackDelay -= (missileData.baseAttackDelay / 100) * 8;
+        missileData.speed += (missileData.baseSpeed / 100) * 10;              //미사일 속도 증가
+        missileData.attackDelay -= (missileData.baseAttackDelay / 100) * 8;   //미사일 쿨타임 감소
         mStar_3[missile_Lv_3].sprite = starSprite;
         missile_Lv_3++;
     }
     public void MissileEvent_4()
     {
-        missileData.damage += (missileData.baseDamage / 100) * 50;
-        missileData.attackDelay += (missileData.baseAttackDelay / 100) * 14;
+        missileData.damage += (missileData.baseDamage / 100) * 50;            //미사일 데미지 증가
+        missileData.attackDelay += (missileData.baseAttackDelay / 100) * 14;  //미사일 쿨타임 증가
         mStar_4[missile_Lv_4].sprite = starSprite;
         missile_Lv_4++;
     }
 
     public void SwordEvent_0()                                                //마법검 능력
     {
-        sword[swordCount].SetActive(false);
-        swordData.damage -= (swordData.baseDamage / 100) * 10;
-        swordCount++;
-        sword[swordCount].SetActive(true);
-        playerScript.soundManager.PlaySwordSound();
-        sStar_0[sword_Lv_0].sprite = starSprite;
-        sword_Lv_0++;
+        sword[swordCount].SetActive(false);                                   //이전 레벨의 마법검 비활성화
+        swordData.damage -= (swordData.baseDamage / 100) * 10;                //마법검 데미지 감소
+        swordCount++;                                                         //마법검 배열의 인덱스 값 증가
+        sword[swordCount].SetActive(true);                                    //인덱스 값의 마법검 활성화
+        playerScript.soundManager.PlaySwordSound();                           //마법검 사운드 재생
+        sStar_0[sword_Lv_0].sprite = starSprite;                              //마법검 능력의 별 이미지 변경
+        sword_Lv_0++;                                                         //마법검 레벨 증가
     }
     public void SwordEvent_1()
     {
-        swordData.speed += (swordData.baseSpeed / 100) * 12;
-        swordData.duration += (swordData.baseDuration / 100) * 8;
+        swordData.speed += (swordData.baseSpeed / 100) * 12;                  //마법검 회전속도 증가
+        swordData.duration += (swordData.baseDuration / 100) * 8;             //마법검 지속시간 증가
         sStar_1[sword_Lv_1].sprite = starSprite;
         sword_Lv_1++;
     }
     public void SwordEvent_2()
     {
-        swordData.damage -= (swordData.baseDamage / 100) * 8;
-        swordData.knockback += (swordData.baseKnockback / 100) * 6;
+        swordData.damage -= (swordData.baseDamage / 100) * 8;                 //마법검 데미지 감소
+        swordData.knockback += (swordData.baseKnockback / 100) * 6;           //마법검 넉백 증가
         sStar_2[sword_Lv_2].sprite = starSprite;
         sword_Lv_2++;
     }
     public void SwordEvent_3()
     {
-        swordData.damage += (swordData.baseDamage / 100) * 30;
-        swordData.speed -= (swordData.baseSpeed / 100) * 8;
+        swordData.damage += (swordData.baseDamage / 100) * 30;                //마법검의 데미지 증가
+        swordData.speed -= (swordData.baseSpeed / 100) * 8;                   //마법검의 회전전속도 감소
         sStar_3[sword_Lv_3].sprite = starSprite;
         sword_Lv_3++;
     }
     public void SwordEvent_4()
     {
-        swordData.damage += (swordData.baseDamage / 100) * 160;
-        swordData.isKnock = false;
+        swordData.damage += (swordData.baseDamage / 100) * 160;               //마법검의 데미지 증가
+        swordData.isKnock = false;                                            //마법검의 넉백 여부 비활성화
         sStar_4[sword_Lv_4].sprite = starSprite;
         sword_Lv_4++;
     }
 
-    //레이저 능력
-    public void LaserEvent_0()
+    public void LaserEvent_0()                                                //레이저 능력
     {
         laserData.count -= 2;                                                 //레이저 타격 회수 감소
         laserData.damage += (laserData.baseDamage / 100) * 60;                //레이저 데미지 증가
@@ -742,79 +741,71 @@ public class LevelUpScript : MonoBehaviour
         laser_Lv_3++;
     }
 
-    //블래스트 능력
-    public void BlastEvent_0()
+    public void BlastEvent_0()                                                //블래스트 능력
     {
-        blastData.damage -= blastData.baseDamage * 0.1f;
-        blastCount++;
-        blast[blastCount].SetActive(true);
-        bStar_0[blast_Lv_0].sprite = starSprite;
-        blast_Lv_0++;
+        blastData.damage -= blastData.baseDamage * 0.1f;                      //블래스트 데미지 감소
+        blastCount++;                                                         //블래스트의 배열 인덱스 값 증가
+        blast[blastCount].SetActive(true);                                    //인덱스 값의 블래스트 활성화
+        bStar_0[blast_Lv_0].sprite = starSprite;                              //블래스트 능력의 별 이미지 변경
+        blast_Lv_0++;                                                         //블래스트 레벨 증가
     }
     public void BlastEvent_1()
     {
-        blastData.damage += blastData.baseDamage * 0.2f;
-        blastData.range += blastData.baseRange * 0.05f;
-        for (int i = 0; i < blast.Length; i++)
+        blastData.damage += blastData.baseDamage * 0.2f;                      //블래스트 데미지 증가
+        blastData.range += blastData.baseRange * 0.05f;                       //블래스트 범위 증가
+        for (int i = 0; i < blast.Length; i++)                                //모든 블래스트의 스케일값 조정
         {
             blast[i].transform.localScale = new Vector3(blastData.range, blastData.range, blastData.range);
         }
-        //blastData.attackDelay -= (blastData.baseAttackDelay / 100) * 8;
         bStar_1[blast_Lv_1].sprite = starSprite;
         blast_Lv_1++;
     }
     public void BlastEvent_2()
     {
-        //blastData.damage += (blastData.baseDamage / 100) * 5;
-        blastData.attackDelay -= blastData.baseAttackDelay * 0.05f;
+        blastData.attackDelay -= blastData.baseAttackDelay * 0.05f;           //블래스트의 쿨타임 감소
         bStar_2[blast_Lv_2].sprite = starSprite;
         blast_Lv_2++;
     }
     public void BlastEvent_3()
     {
-        blastData.damage += blastData.baseDamage * 0.3f;
-        for (int i = 0; i < blast.Length; i++)
-        {
-            blast[i].transform.localScale = new Vector3(blastData.range, blastData.range, blastData.range);
-        }
-        blastData.critical += 6f;
+        blastData.damage += blastData.baseDamage * 0.3f;                      //블래스트의 데미지 증가
+        blastData.critical += 6f;                                             //블래스트의 치명타 확률 증가
         bStar_3[blast_Lv_3].sprite = starSprite;
         blast_Lv_3++;
     }
     public void BlastEvent_4()
     {
-        blastData.criticalDamage += 0.2f;
+        blastData.criticalDamage += 0.2f;                                     //블래스트의 치명타 데미지 증가
         bStar_4[blast_Lv_4].sprite = starSprite;
         blast_Lv_4++;
     }
 
-    //Floor
-    public void FloorEvent_0()
+    public void FloorEvent_0()                                                //장판 능력
     {
-        floorData.damage += (floorData.baseDamage / 100) * 20;
-        fStar_0[floor_Lv_0].sprite = starSprite;
-        floor_Lv_0++;
+        floorData.damage += (floorData.baseDamage / 100) * 20;                //장판의 데미지 증가
+        fStar_0[floor_Lv_0].sprite = starSprite;                              //장판 능력의 별 이미지 변경
+        floor_Lv_0++;                                                         //장판 레벨 증가
     }
     public void FloorEvent_1()
     {
-        floorData.range += floorData.baseRange / 12;
-        floor.transform.localScale = new Vector3(floorData.range, floorData.range, floorData.range);
+        floorData.range += floorData.baseRange / 12;                          //장판의 범위 증가
+        floor.transform.localScale = new Vector3(floorData.range, floorData.range, floorData.range);        //장판의 스케일값 조정
         fStar_1[floor_Lv_1].sprite = starSprite;
         floor_Lv_1++;
     }
     public void FloorEvent_2()
     {
-        floorData.slow += 10;
-        floorW.isSlow = true;
-        floorW.FloorDebuff();
+        floorData.slow += 10;                                                 //장판의 이동속도 감소량 증가
+        floorW.isSlow = true;                                                 //장판의 이동속도 감소 여부
+        floorW.FloorDebuff();                                                 //장판 내에 있는 적에게 이동속도 감소 효과 부여
         fStar_2[floor_Lv_2].sprite = starSprite;
         floor_Lv_2++;
     }
     public void FloorEvent_3()
     {
-        floorData.decrease += 5;
-        floorW.isDecrease = true;
-        floorW.FloorDebuff();
+        floorData.decrease += 5;                                              //장판의 방어력 감소량 증가
+        floorW.isDecrease = true;                                             //장판의 방어력 감소 여부
+        floorW.FloorDebuff();                                                 //장판 내에 있는 적에게 방어력 감소 효과 부여
         fStar_3[floor_Lv_3].sprite = starSprite;
         floor_Lv_3++;
     }
