@@ -1,6 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "PlayerData", menuName = "Scriptble Object/PlayerData")]
+//에셋메뉴를 만들어 무기 데이터를 관리
 
 public class PlayerData : ScriptableObject
 {
