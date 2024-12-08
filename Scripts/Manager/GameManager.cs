@@ -51,12 +51,10 @@ public class GameManager : MonoBehaviour
     public GameObject joystick;
     public FloatingJoystick floatJoystick;
 
-    [SerializeField]
-    Dropdown languageDown;
-    [SerializeField]
-    GameObject settingPanel;
-    [SerializeField]
-    GameObject gameoverPanel;
+    public Dropdown languageDown;
+    public GameObject settingPanel;
+    public GameObject gameoverPanel;
+    
     public Text expText;
     public Text hpText;
     public Text defenseText;
@@ -73,7 +71,7 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
-        SetExp();
+        maxExp = playerScript.exp;
         playerScript.SetData();
     }
 
@@ -90,9 +88,12 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
+        //타이머 텍스트를 시간이 흐름에 따라 변경
+        
         timerText.text = (time / 60 % 60).ToString("D2") + ":" + (time % 60).ToString("D2");
         isSpawn = true; 
-        
+
+        //모바일 뒤로가기 버튼 입력 시 일시정지지
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (settingPanel.activeSelf == false && !isOver)
@@ -106,6 +107,7 @@ public class GameManager : MonoBehaviour
             int level;
             level = playerLevel;
 
+            //레벨에 따른 경험치량 조정
             if (10 < level && level <= 15)
                 level = 10;
             else if (15 < level && level <= 20)
@@ -122,14 +124,17 @@ public class GameManager : MonoBehaviour
             ResetExp(levelUpScript.playerData.exps[level]);
         }
 
+        //플레이어의 체력이 0 이하로 떨어지면 게임오버
         if (playerScript.hp <= 0 && !isOver)
         {
             GameOver();
         }
     }
 
+    //게임오버
     void GameOver()
-    {
+    {   
+        //게임오버 시 생존한 시간과 처치한 몬스터의 수의 값 입력
         time_.text = time + "s";
         kill_.text = killCount.ToString();
         isOver = true;
@@ -137,12 +142,7 @@ public class GameManager : MonoBehaviour
         gameoverPanel.SetActive(true);
     }
 
-    void SetExp()
-    {
-        maxExp = playerScript.exp;
-    }
-
-    //경험치
+    //경험치 증가
     public void AddExp()
     {
         if (expBar.fillAmount == 1)
@@ -154,6 +154,7 @@ public class GameManager : MonoBehaviour
         
     }
 
+    //경험치 초기화 및 필요경험치량 조정
     void ResetExp(float newExp)
     {
         curExp = 0;
@@ -163,14 +164,15 @@ public class GameManager : MonoBehaviour
 
         playerLevel++;
         levelUpScript.playerData.maxHp++;
+
+        //레벨 업 시 플레이어 체력 증가 or 회복
         if (levelUpScript.playerScript.hp + 2 > levelUpScript.playerData.maxHp)
             levelUpScript.playerScript.hp++;
         else if(levelUpScript.playerScript.hp + 2 < levelUpScript.playerData.maxHp)
-        {
             levelUpScript.playerScript.hp += 2;
-        }
+            
         levelUpScript.playerData.offense += 0.5f;
-
+        
         playerScript.SetData();
         hpBar.fillAmount = playerScript.hp / playerScript.maxHp;
 
