@@ -81,29 +81,29 @@ public class MonsterScript : MonoBehaviour
         
         for (int i = 0; i < damageParticle.Length; i++)                                                //데미지 파티클 시스템 풀링과 파티클 시스템의 값 변경
         {
-            var main = damageParticle[i].main;                                                         //데미지 파티클
-            main.startLifetime = 1.2f;
-            main.startSize = 0.105f;
-            main.startSpeed = 0.8f;
-            main.duration = 0.8f;
-            main.maxParticles = 1;
+            var main = damageParticle[i].main;                                                         //데미지 파티클의 main 할당
+            main.startLifetime = 1.2f;                                                                 //라이프타임 값 변경
+            main.startSize = 0.105f;                                                                   //시작크기 값 변경
+            main.startSpeed = 0.8f;                                                                    //시작속도 값 변경
+            main.duration = 0.8f;                                                                      //유지시간 값 변경
+            main.maxParticles = 1;                                                                     //최대 파티클의 수 변경
 
             for (int j = 0; j < 10; j++)
             {
-                particle[i].particle_[j] = Instantiate(damageParticle[i]);
-                particle[i].particle_[j].transform.parent = damageObj.transform;
-                particle[i].particle_[j].transform.position = damageParticle[i].transform.position;
+                particle[i].particle_[j] = Instantiate(damageParticle[i]);                             //데미지 파티클 오브젝트 생성
+                particle[i].particle_[j].transform.parent = damageObj.transform;                       //오브젝트의 부모 변경
+                particle[i].particle_[j].transform.position = damageParticle[i].transform.position;    //오브젝트의 위치 변경
             }
         }
 
-        ResetStat();
-        speed_Defalt = speed;
-        defense_Defalt = defense;
+        ResetStat();                                                                                   //몬스터의 스탯 설정
+        speed_Defalt = speed;                                                                          //몬스터의 기본 이동속도 값 대입입
+        defense_Defalt = defense;                                                                      //몬스터의 기본 방어력 값 대입
     }
 
     void Update()
     {
-        if (gameManager.isOver)
+        if (gameManager.isOver)                                                             //게임오버 시 실행 
             return;
 
         damageTime += Time.deltaTime;
