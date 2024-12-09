@@ -1,80 +1,71 @@
 using System.Collections;
 using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.Pool;
 
-using Random = UnityEngine.Random;
+using Random = UnityEngine.Random;                                //Mathematics와 UnityEngine의 모호한 참조로 인해 UnityEngine에 있는 랜덤을 사용 
 
-[System.Serializable]
-public class DamageParticle
+[System.Serializable]                                             //데이터 직렬화
+public class DamageParticle                                       //파티클 시스템 이차원배열을 위한 클래스
 {
-    public ParticleSystem[] particle_;
+    public ParticleSystem[] particle_;                            //이차원 배열
 }
 
 public class MonsterScript : MonoBehaviour
 {
-    WaitForFixedUpdate wait_1 = new WaitForFixedUpdate();
+    WaitForFixedUpdate wait_1 = new WaitForFixedUpdate();         //코루틴의 yield return new 최적화를 위해 미리 캐싱하여 사용
     WaitForSeconds wait_2 = new WaitForSeconds(0.1f);
     WaitForSeconds wait_mon = new WaitForSeconds(0.4f);
 
-
     public MonsterData monsterData;
-    public static readonly WaitForFixedUpdate waitForFixedUpdate = new WaitForFixedUpdate();
     LevelUpScript levelUpScript;
     GameManager gameManager;
     PlayerScript playerScript;
     MonManager monManager;
 
-    public Animator animator;
+    public Animator animator;                                     //몬스터의 애니메이터
 
-    public IObjectPool<GameObject> Pool { get; set; }
+    float damageDelay = 0.8f;                                     //몬스터가 플레이어에게 피해를 입히는 쿨타임
+    float damageTime = 0;                                         //시간
 
-    float damageDelay = 0.8f;
-    float damageTime = 0;
+    bool isContact = false;                                       //몬스터와 플레이어가 접촉해있는지에 대한 여부
 
-    bool isContact = false;
+    public float hp;                                              //체력
+    public float damage;                                          //데미지
+    public float defense;                                         //방어력
+    public float offense;                                         //공격력
+    public float speed;                                           //스피드
+    public float knockbackDefense;                                //넉백저항력
+    public float knockbackTime;                                   //넉백쿨타임
 
-    public float hp;
-    public float damage;
-    public float defense;
-    public float offense;
-    public float speed;
-    public float knockbackDefense;
-    public float knockbackTime;
+    bool isLive = true;                                           //몬스터의 생존 여부
+    bool isHit = false;                                           //몬스터의 피격 여부
 
-    bool isLive = true;
-    bool isHit = false;
-
-    public bool isSlow = false;
-    public bool isDecrease = false;
+    public bool isSlow = false;                                   //몬스터의 이동속도 감소 여부
+    public bool isDecrease = false;                               //몬스터의 방어력 감소 여부
 
     Rigidbody2D rigid;
     CircleCollider2D col;
     SpriteRenderer spriter;
-    public Rigidbody2D target;
+    public Rigidbody2D target;                                    //몬스터의 타겟 = 플레이어
 
     [SerializeField]
-    ParticleSystem[] damageParticle;
+    ParticleSystem[] damageParticle;                              //데미지 파티클 시스템 배열
     [SerializeField]
-    GameObject damageObj;
-    public DamageParticle[] particle;
+    GameObject damageObj;                                         //데미지 파티클 게임오브젝트
+    public DamageParticle[] particle;                             //데미지 파티클 이차원배열
     [SerializeField]
-    Weapon laserEnd;
+    Weapon laserEnd;                                              //무기 레이저의 끝 스크립트
     [SerializeField]
-    Weapon floor;
+    Weapon floor;                                                 //무기 장판 스크립트
     [SerializeField]
-    Weapon blast;
-    [SerializeField]
-    GameObject blastObj;
-    public float speed_Defalt;
-    public float defense_Defalt;
-
-    int pCount_0 = 0;
-    int pCount_00 = 0;
-    int pCount_000 = 0;
-    int pCount_0000 = 0;
-
-    int pCount = 0;
+    Weapon blast;                                                 //무기 블래스트 스크립트
+    [SerializeField]   
+    GameObject blastObj;                                          //무기 블래스트 오브젝트
+    
+    public float speed_Defalt;                                    //몬스터의 기본 이동속도 - 장판 범위에서 벗어났을 경우 원래대로 돌려놓기 위한 값
+    public float defense_Defalt;                                  //몬스터의 기본 방어력 - 장판 범위에서 벗어났을 경우 원래대로 돌려놓기 위한 값
+    
+    int pCount = 0;                                               //파티클 시스템 오브젝트의 인덱스 값
 
     void Awake()
     {
@@ -88,9 +79,9 @@ public class MonsterScript : MonoBehaviour
         target = GameObject.FindWithTag("Player").GetComponent<Rigidbody2D>();
         col = GetComponent<CircleCollider2D>();
         
-        for (int i = 0; i < damageParticle.Length; i++)
+        for (int i = 0; i < damageParticle.Length; i++)                                                //데미지 파티클 시스템 풀링과 파티클 시스템의 값 변경
         {
-            var main = damageParticle[i].main;
+            var main = damageParticle[i].main;                                                         //데미지 파티클
             main.startLifetime = 1.2f;
             main.startSize = 0.105f;
             main.startSpeed = 0.8f;
@@ -486,28 +477,28 @@ public class MonsterScript : MonoBehaviour
             hunbreds = (damage / 100) % 10;
             thousands = damage / 1000;
 
-            particle[0].particle_[pCount_0000].textureSheetAnimation.SetSprite(0, gameManager.damageSprite[units]);
-            particle[1].particle_[pCount_0000].textureSheetAnimation.SetSprite(0, gameManager.damageSprite[tens]);
-            particle[2].particle_[pCount_0000].textureSheetAnimation.SetSprite(0, gameManager.damageSprite[hunbreds]);
-            particle[3].particle_[pCount_0000].textureSheetAnimation.SetSprite(0, gameManager.damageSprite[thousands]);
+            particle[0].particle_[pCount].textureSheetAnimation.SetSprite(0, gameManager.damageSprite[units]);
+            particle[1].particle_[pCount].textureSheetAnimation.SetSprite(0, gameManager.damageSprite[tens]);
+            particle[2].particle_[pCount].textureSheetAnimation.SetSprite(0, gameManager.damageSprite[hunbreds]);
+            particle[3].particle_[pCount].textureSheetAnimation.SetSprite(0, gameManager.damageSprite[thousands]);
 
-            particle[0].particle_[pCount_0000].transform.position = new Vector3(damageObj.transform.position.x + 0.21f,
+            particle[0].particle_[pCount].transform.position = new Vector3(damageObj.transform.position.x + 0.21f,
                                                    damageObj.transform.position.y, damageObj.transform.position.z);
-            particle[1].particle_[pCount_0000].transform.position = new Vector3(damageObj.transform.position.x + 0.07f,
+            particle[1].particle_[pCount].transform.position = new Vector3(damageObj.transform.position.x + 0.07f,
                                                    damageObj.transform.position.y, damageObj.transform.position.z);
-            particle[2].particle_[pCount_0000].transform.position = new Vector3(damageObj.transform.position.x - 0.07f,
+            particle[2].particle_[pCount].transform.position = new Vector3(damageObj.transform.position.x - 0.07f,
                                                    damageObj.transform.position.y, damageObj.transform.position.z);
-            particle[3].particle_[pCount_0000].transform.position = new Vector3(damageObj.transform.position.x - 0.21f,
+            particle[3].particle_[pCount].transform.position = new Vector3(damageObj.transform.position.x - 0.21f,
                                                    damageObj.transform.position.y, damageObj.transform.position.z);
 
-            particle[0].particle_[pCount_0000].Emit(1);
-            particle[1].particle_[pCount_0000].Emit(1);
-            particle[2].particle_[pCount_0000].Emit(1);
-            particle[3].particle_[pCount_0000].Emit(1);
+            particle[0].particle_[pCount].Emit(1);
+            particle[1].particle_[pCount].Emit(1);
+            particle[2].particle_[pCount].Emit(1);
+            particle[3].particle_[pCount].Emit(1);
 
-            pCount_0000++;
-            if (pCount_0000 >= damageParticle.Length)
-                pCount_0000 = 0;
+            pCount++;
+            if (pCount >= damageParticle.Length)
+                pCount = 0;
         }
     }
 
