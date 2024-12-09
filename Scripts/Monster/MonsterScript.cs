@@ -3,7 +3,6 @@ using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Pool;
 
-using Color = UnityEngine.Color;
 using Random = UnityEngine.Random;
 
 [System.Serializable]
