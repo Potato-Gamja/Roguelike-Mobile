@@ -8,7 +8,6 @@ using MagicArsenal;
 public class Weapon : MonoBehaviour
 {
     GameManager gameManager;
-    MonManager monManager;
     [SerializeField]
     MagicBeamStatic magicBeamStatic;
     GameObject player;
@@ -26,17 +25,10 @@ public class Weapon : MonoBehaviour
     LevelUpScript levelUpScript;
     public string type;
 
-    Rigidbody2D rb;
     public int hitCount;
     public float hitTime = 0.1f;
     
     public float time = 0;
-
-   // [Header("Missile Weapon")]
-
-    [Header("Sword Weapon")]
-    BoxCollider2D boxCollider;
-    float durTime;
 
     [Header("Laser Weapon")]
     CircleCollider2D circleCollider;
@@ -60,7 +52,6 @@ public class Weapon : MonoBehaviour
     ParticleSystem particleSystem_;
     float playTime = 0f;
     bool isPlay;
-    bool isCount;
 
     [Header("Floor Weapon")]
     public List<GameObject> floorTarget;
@@ -72,10 +63,8 @@ public class Weapon : MonoBehaviour
     {
         gameManager = GameObject.FindWithTag("GameManager").GetComponent<GameManager>();
         levelUpScript = GameObject.FindWithTag("LevelManager").GetComponent<LevelUpScript>();
-        monManager = GameObject.FindWithTag("GameManager").GetComponent<MonManager>();
         player = GameObject.FindWithTag("Player");
         playerScript = GameObject.FindWithTag("Player").GetComponent<PlayerScript>();
-        rb = GetComponent<Rigidbody2D>();
 
         if (type == "missile")
         {
@@ -85,7 +74,6 @@ public class Weapon : MonoBehaviour
         else if (type == "sword")
         {
             swordAni = GetComponent<Animator>();
-            boxCollider = GetComponent<BoxCollider2D>();
         }
         else if(type == "laser")
         {
