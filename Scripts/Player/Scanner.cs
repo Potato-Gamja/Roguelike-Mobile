@@ -37,6 +37,6 @@ public class Scanner : MonoBehaviour
         }
 
         nearestTarget = result;                                        //타겟의 트랜스폼 저장
-        targetObj = obj;                                               //타겟의 게임오브젝트 저장, 레이저 무기 타겟에 사용되는 게임
+        targetObj = obj;                                               //타겟의 게임오브젝트 저장, 레이저 무기 타겟에 사용되는 게임오브젝트
     }
 }
