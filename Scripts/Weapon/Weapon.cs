@@ -63,6 +63,7 @@ public class Weapon : MonoBehaviour
         player = GameObject.FindWithTag("Player");
         playerScript = GameObject.FindWithTag("Player").GetComponent<PlayerScript>();
 
+        //문자열 비교를 이용
         if (type == "missile")
         {
             circleCollider = GetComponent<CircleCollider2D>();
@@ -98,10 +99,10 @@ public class Weapon : MonoBehaviour
 
     void Update()
     {
-        if (gameManager.isOver)
+        if (gameManager.isOver)        //게임오버 시 리턴
             return;
 
-        switch (type)
+        switch (type)                  //
         {
             case "missile":
                 if (transform.position.x > 20f || transform.position.x < -20f || transform.position.y > 20f || transform.position.y < -20f)
