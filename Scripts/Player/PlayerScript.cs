@@ -18,59 +18,57 @@ public class PlayerScript : MonoBehaviour
     [SerializeField]
     Transform staff;
 
-    public GameObject hpBar;
-    public GameObject hpBarPos;
+    public GameObject hpBar;            //체력바
+    public GameObject hpBarPos;         //체력바 위치
 
-    public GameObject sword;
-    public Weapon[] swords;
-    public GameObject laser;
+    public GameObject sword;            //마법검 오브젝트
+    public Weapon[] swords;             //마법검 스크립트 배열
     
-    public GameObject laserBeam;
-    public GameObject laserOrb;
+    public GameObject laser;            //레이저 오브젝트
+    public GameObject laserBeam;        //레이저의 빔
+    public GameObject laserOrb;         //레이저의 오브
 
-    public Weapon laserWeapon;
-    public Weapon laserEnd;
+    public Weapon laserWeapon;          //레이저 무기 스크립트
+    public Weapon laserEnd;             //레이저 끝 부위 스크립트
 
-    public GameObject floor;
+    public GameObject floor;            //장판 오브젝트
 
-    public int playerType;
+    public float maxHp;                 //최대 체력
+    public float hp;                    //현재 체력
+    public float defense;               //방어력
+    public float offense;               //공격력
+    public float baseSpeed;             //기본 이동속도
+    public float speed;                 //이동속도
+    public float critical;              //치명타 확률
+    public float baseAttackDelay;       //기본 공격속도
+    public float attackDelay;           //공격속도
+    public float exp;                   //경험치
+    public Vector3 scale;               //크기
 
-    public float maxHp;
-    public float hp;
-    public int hp_;
-    public float defense;
-    public float offense;
-    public float baseSpeed;
-    public float speed;
-    public float critical;
-    public float baseAttackDelay;
-    public float attackDelay;
-    public float exp;
-    public Vector3 scale;
-
-    int weaponCount = 0;
-    float attackTime_Missile = 0;
-    public float attackTime_Laser = 0;
-    public float attackTime_Sword = 0;
-    public float swordScale = 0;
+    int weaponCount = 0;                //미사일 인덱스 값
+    
+    float attackTime_Missile = 0;       //미사일 공격 타이머
+    float attackTime_Laser = 0;         //레이저 공격 타이머
+    float attackTime_Sword = 0;         //마법검 공격 타이머
 
     [SerializeField]
-    CircleCollider2D[] missileCol;
+    CircleCollider2D[] missileCol;      //미사일의 콜라이더
     [SerializeField]
-    Weapon[] missileWeapon;
+    Weapon[] missileWeapon;             //미사일의 무기 스크립트
 
-    public bool isSword = true;
-    public bool isLaser = false;
+    public bool isSword = true;        //마법검 활성화 여부
+    public bool isLaser = false;        //레이저 활성화 여부
 
-    public FloatingJoystick joy;
-    public Vector2 minPos;
-    public Vector2 maxPos;
+    public FloatingJoystick joy;        //조이스틱 스크립트
+    
+    public Vector2 minPos;              //플레이어의 최소 이동 범위
+    public Vector2 maxPos;              //플레이어의 최대 이동 범위
 
-    public Vector3 vec;
+    public Vector3 vec;                 //플레이어의 이동 벡터터
 
     void Awake()
     {
-        SetData();
+        SetData();                      //데이터 설정정
 
         hp = levelUpScript.playerData.hp;
         animator = GetComponent<Animator>();
@@ -87,7 +85,7 @@ public class PlayerScript : MonoBehaviour
         }
     }
 
-    public void SetData()
+    public void SetData()                                        //플레이어 데이터의 값을 각 스탯에 대입
     {
         maxHp = levelUpScript.playerData.maxHp;
         hp = hp;
@@ -103,31 +101,31 @@ public class PlayerScript : MonoBehaviour
 
     void Update()
     {
-        if (Time.timeScale == 0f || gameManager.isOver)
+        if (Time.timeScale == 0f || gameManager.isOver)        //일시정지 상태거나 게임오버 상태일 경우 리턴
             return;
 
         attackTime_Missile += Time.deltaTime;
 
-        if (levelUpScript.isLaser)
+        if (levelUpScript.isLaser)                             //레이저가 활성화 되어있을 시 실행
         {
             attackTime_Laser += Time.deltaTime;
         }
-        if (levelUpScript.isSword)
+        if (levelUpScript.isSword)                             //마법검이 활성화 되어있을 시 타이머
         {
             attackTime_Sword += Time.deltaTime;
         }
 
-        Move();
+        Move();                                                //플레이어 이동 함수 실행
 
-        if (attackTime_Missile >= (levelUpScript.missileData.attackDelay / 100) * attackDelay)
+        if (attackTime_Missile >= (levelUpScript.missileData.attackDelay / 100) * attackDelay)            //미사일 쿨타임과 타이머 비교
         {
             Attack_Missile();
         }
-        if (attackTime_Sword >= (levelUpScript.swordData.attackDelay / 100 * attackDelay) && isSword)
+        if (attackTime_Sword >= (levelUpScript.swordData.attackDelay / 100 * attackDelay) && isSword)     //마법검 쿨타임과 타이머 비교
         {
             if (isSword)
-                Attack_Sword();
-            isSword = false;
+                Attack_Sword();                                                                           //마법검 공격 실행
+            isSword = false;                                                                              //마법검 공격 여부
 
         }
         if (attackTime_Laser >= (levelUpScript.laserData.attackDelay / 100) * attackDelay && !isLaser)
