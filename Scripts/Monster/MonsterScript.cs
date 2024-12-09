@@ -25,7 +25,7 @@ public class MonsterScript : MonoBehaviour
     public Animator animator;                                     //몬스터의 애니메이터
 
     float damageDelay = 0.8f;                                     //몬스터의 공격 쿨타임
-    float damageTime = 0;                                         //공격 쿨타임 비교 시간
+    float damageTime = 0;                                         //공격 타이머
 
     bool isContact = false;                                       //몬스터와 플레이어가 접촉해있는지에 대한 여부
 
@@ -194,126 +194,42 @@ public class MonsterScript : MonoBehaviour
         rigid.MovePosition(rigid.position + nextVec);                                       //몬스터의 목적지를 향해 이동 
     }
 
-    public void Knock_Missile()
+    public void Knock_Missile()                                                           //미사일에 대한 넉백
     {
-        isHit = true;
-        float knockbackPower = levelUpScript.missileData.knockback - knockbackDefense;
-        if (knockbackPower < 0)
+        isHit = true;                                                                     //피격 여부
+        float knockbackPower = levelUpScript.missileData.knockback - knockbackDefense;    //미사일 넉백과 몬스터의 넉백저향을 계산 뒤 대입
+        
+        if (knockbackPower < 0)                                                           //넉백저항이 커서 뒤가 아니라 앞으로 밀려오는 현상 막기
             knockbackPower = 0;
 
         if (isHit)
-            StartCoroutine(MissileKnockBack(knockbackPower));
+            StartCoroutine(MissileKnockBack(knockbackPower));                             //미사일 넉백 코루틴 실행
     }
 
-    public void Knock_Blast(GameObject blast)
+    public void Knock_Blast(GameObject blast)                                             //블래스트 넉백
     {
-        isHit = true;
-        float knockbackPower = levelUpScript.blastData.knockback - knockbackDefense;
-        if (knockbackPower < 0)
+        isHit = true;                                                                     //피격 여부
+        float knockbackPower = levelUpScript.blastData.knockback - knockbackDefense;      //블래스트 넉백과 몬스터의 넉백저항을 계산 뒤 대입
+        
+        if (knockbackPower < 0)                                                           //넉백저항이 커서 뒤가 아니라 앞으로 밀려오는 현상 막기
             knockbackPower = 0;
 
         if (isHit)
-            StartCoroutine(BlastKnockBack(knockbackPower, blast));
+            StartCoroutine(BlastKnockBack(knockbackPower, blast));                        //블래스트 넉백 코루틴 실행
     }
-
-    private void OnTriggerStay2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Player") && playerScript.hp > 0)
-        {
-            isContact = true;
-
-            if (damageTime > damageDelay)
-            {
-                float totalDamage;
-                totalDamage = (offense + damage) - playerScript.defense;
-
-                if (totalDamage >= 1)
-                {
-                    playerScript.hp -= totalDamage;
-                    playerScript.animator.SetTrigger("Hit");
-
-                    if (playerScript.hp <= 0)
-                        playerScript.hp = 0;
-
-                    playerScript.SetData();
-                    gameManager.hpBar.fillAmount = playerScript.hp / playerScript.maxHp;
-
-                }
-                else
-                {
-                    playerScript.hp -= 1;
-                    playerScript.animator.SetTrigger("Hit");
-
-                    if (playerScript.hp <= 0)
-                        playerScript.hp = 0;
-
-                    playerScript.SetData();
-                    gameManager.hpBar.fillAmount = playerScript.hp / playerScript.maxHp;
-
-                }
-
-                damageTime = 0;
-            }
-
-        }
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Player") && playerScript.hp > 0)
-            isContact = false;
-
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Sword"))
-        {
-
-            isHit = true;
-            float totalDamage;
-            bool isCritical = false;
-            float swordDamage = Random.Range(levelUpScript.swordData.damage - 3, levelUpScript.swordData.damage + 3);
-
-            if (!levelUpScript.playerData.isTrueDamage)
-                totalDamage = math.floor((playerScript.offense / 100 * swordDamage - defense) * 10f) / 10f;
-            else
-                totalDamage = math.floor((playerScript.offense / 100 * swordDamage) * 10f) / 10f;
-
-            if (totalDamage < 1f)
-                totalDamage = 1f;
-
-            totalDamage = math.floor(totalDamage);
-            DamageText(totalDamage, isCritical);
-            animator.SetTrigger("Hit");
-            hp -= totalDamage;
-
-            float knockbackPower = levelUpScript.swordData.knockback - knockbackDefense;
-
-            if (knockbackPower < 0)
-                knockbackPower = 0;
-
-            if (!levelUpScript.swordData.isKnock)
-                knockbackPower = 0;
-
-            if (isHit)
-                StartCoroutine(SwordKnockBack(knockbackPower));
-        }
-
-    }
-
+    
     IEnumerator MissileKnockBack(float power)
     {
-        yield return wait_1;
-        Vector3 playerPos = target.transform.position;
-        Vector3 dirVec = transform.position - playerPos;
-        rigid.AddForce(dirVec.normalized * power, ForceMode2D.Impulse);
-        yield return wait_2;
-        rigid.velocity = Vector2.zero;
-        isHit = false;
+        yield return wait_1;                                                              //지연
+        Vector3 playerPos = target.transform.position;                                    //플레이어 위치 대입
+        Vector3 dirVec = transform.position - playerPos;                                  //몬스터와 플레이어의 거리
+        rigid.AddForce(dirVec.normalized * power, ForceMode2D.Impulse);                   //방향 백터에 넉백 정도를 곱하여 순간적인 힘을 가함
+        yield return wait_2;                                                              //넉백 되는 시간 동안 지연
+        rigid.velocity = Vector2.zero;                                                    //넉백을 없애기 위한 멈추기
+        isHit = false;                                                                    //피격 여부
     }
 
-    IEnumerator BlastKnockBack(float power, GameObject blast)
+    IEnumerator BlastKnockBack(float power, GameObject blast)                             //이후 아래는 위와 동일
     {
         yield return wait_1;
         Vector3 blastPos = blast.transform.position;
@@ -323,7 +239,94 @@ public class MonsterScript : MonoBehaviour
         rigid.velocity = Vector2.zero;
         isHit = false;
     }
+    
+    private void OnTriggerStay2D(Collider2D collision)                                           //트리거 콜라이더가 접촉 중
+    {
+        if (collision.CompareTag("Player") && playerScript.hp > 0)                               //접촉한 콜라이더의 태그가 플레이어일 시 & 플레이어의 체력이 0 초과일 경우
+        {
+            isContact = true;                                                                    //플레이어와의 접촉 여부
 
+            if (damageTime > damageDelay)                                                        //공격 가능한 지 체크
+            {
+                float totalDamage;                                                               //총 데미지 변수
+                totalDamage = (offense + damage) - playerScript.defense;                         //몬스터의 공격력과 데미지을 합하고 플레이어의 방어력과 계산하여 데미지의 총합 대입
+
+                if (totalDamage >= 1)                                                            //데미지가 1이상일 경우
+                {
+                    playerScript.hp -= totalDamage;                                              //데미지만큼 플레이어의 체력 감소
+                    playerScript.animator.SetTrigger("Hit");                                     //플레이어의 피격 애니메이터 트리거 작동
+
+                    if (playerScript.hp <= 0)                                                    //플레이어의 체력이 0보다 아내로 내려가지 않게 하기
+                        playerScript.hp = 0;
+
+                    playerScript.SetData();                                                      //감소된 체력을 적용하기 위한 플레이어의 데이터 설정 함수 실행
+                    gameManager.hpBar.fillAmount = playerScript.hp / playerScript.maxHp;         //감소된 체력을 플레이어의 체력바에 적용
+
+                }
+                else                                                                             //데미지가 0이하 일 경우
+                { 
+                    playerScript.hp -= 1;                                                        //플레이어의 체력 1감소
+                    playerScript.animator.SetTrigger("Hit");                                     //플레이어의 피격 애니메이터 트리거 작동
+
+                    if (playerScript.hp <= 0)                                                    //플레이어의 체력이 0보다 아내로 내려가지 않게 하기
+                        playerScript.hp = 0;
+
+                    playerScript.SetData();                                                      //감소된 체력을 적용하기 위한 플레이어의 데이터 설정 함수 실행
+                    gameManager.hpBar.fillAmount = playerScript.hp / playerScript.maxHp;         //감소된 체력을 플레이어의 체력바에 적용
+
+                }
+
+                damageTime = 0;                                                                  //공격 타이머 0으로 초기화
+            }
+
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)                            //트리거 콜라이더 접촉 중지 시
+    {
+        if (collision.CompareTag("Player") && playerScript.hp > 0)                //플레이어와 접촉, 플레이어의 체력이 0 초과 시 실행
+            isContact = false;                                                    //플레이어와의 접촉 여부
+
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)                                                            //트리거 콜라이더 접촉 시
+    {
+        if (collision.CompareTag("Sword"))                                                                         //접촉한 콜라이더의 태그가 마법검일 경우우
+        {
+
+            isHit = true;                                                                                          //피격 여부
+            float totalDamage;                                                                                     //마법검의 총 데미지
+            bool isCritical = false;                                                                               //치명타 여부
+            float swordDamage = Random.Range(levelUpScript.swordData.damage - 3,                                   //마법검의 데미지 -+3의 랜덤값
+                                             levelUpScript.swordData.damage + 3);
+
+            if (!levelUpScript.playerData.isTrueDamage)                                                            //고정피해 off 시
+                totalDamage = math.floor((playerScript.offense / 100 * swordDamage - defense) * 10f) / 10f;        //플레이어의 공격력과 마법검의 데미지, 몬스터의 방어력을 계산한 뒤 소수점 한자리 버리기
+            else                                                                                                   //고정피해 on 시
+                totalDamage = math.floor((playerScript.offense / 100 * swordDamage) * 10f) / 10f;                  //고정피해이므로 플레이어의 공격력과 마법검의 데미지 계산 뒤 소수점 한자리 버리기
+
+            if (totalDamage < 1f)                                                                                  //마법검의 총 데미지가 1 미만일 경우
+                totalDamage = 1f;                                                                                  //데미지 1로
+
+            totalDamage = math.floor(totalDamage);                                                                 //소수점을 버린 값을 총 데미지에 대입
+            DamageText(totalDamage, isCritical);                                                                   //데미지 파티클을 표시하는 함수
+            animator.SetTrigger("Hit");                                                                            //몬스터의 피격 트리거 작동
+            hp -= totalDamage;                                                                                     //총 데미지만큼 몬스터의 체력 감소
+
+            float knockbackPower = levelUpScript.swordData.knockback - knockbackDefense;                           //마법검의 넉백과 몬스터의 넉백저항을 계산한 뒤 대입
+
+            if (knockbackPower < 0)                                                                                //넉백저항이 커서 뒤가 아니라 앞으로 밀려오는 현상 막기
+                knockbackPower = 0;
+
+            if (!levelUpScript.swordData.isKnock)                                                                  //만약 마법검의 넉백이 제거되었을 경우에는 0으로
+                knockbackPower = 0;
+
+            if (isHit)
+                StartCoroutine(SwordKnockBack(knockbackPower));                                                    //마법검 넉백 코루틴 실행행
+        }
+
+    }
+    
     IEnumerator SwordKnockBack(float power)
     {
         yield return wait_1;
@@ -334,18 +337,18 @@ public class MonsterScript : MonoBehaviour
         rigid.velocity = Vector2.zero;
         isHit = false;
     }
-
-    public void DamageText(float totaldamage, bool isCritical)
+    
+    public void DamageText(float totaldamage, bool isCritical)           //데미지 파티클 함수
     {
-        int units;
-        int tens;
-        int hunbreds;
-        int thousands;
-        int damage = (int)totaldamage;
+        int units;                                                       //일의 자리수
+        int tens;                                                        //십의 자리수
+        int hunbreds;                                                    //백의 자리수
+        int thousands;                                                   //천의 자리수
+        int damage = (int)totaldamage;                                   //총 데미지를 int형으로 대입
 
-        if (!levelUpScript.playerData.isTrueDamage)
+        if (!levelUpScript.playerData.isTrueDamage)                      //고정데미지 여부 확인
         {
-            if (isCritical)
+            if (isCritical)                                              //치명타 피해 시
             {
                 for (int i = 0; i < damageParticle.Length; i++)
                 {
@@ -353,13 +356,13 @@ public class MonsterScript : MonoBehaviour
                     {
                         var main = particle[i].particle_[j].main;
                         main.startLifetime = 1.2f;
-                        main.startSize = 0.105f;
+                        main.startSize = 0.105f;                         //사이즈 변경
                         main.startSpeed = 0.8f;
-                        main.startColor = new Color(200, 5, 0);
+                        main.startColor = new Color(200, 5, 0);          //노란색으로 색상 변경
                     }
                 }
             }
-            else
+            else                                                         //일반 피해 시
             {
                 for (int i = 0; i < damageParticle.Length; i++)
                 {
@@ -369,7 +372,7 @@ public class MonsterScript : MonoBehaviour
                         main.startLifetime = 1.2f;
                         main.startSize = 0.1f;
                         main.startSpeed = 0.8f;
-                        main.startColor = new Color(255, 255, 255);
+                        main.startColor = new Color(255, 255, 255);     //흰색으로 변경
                     }
                 }
 
@@ -406,11 +409,11 @@ public class MonsterScript : MonoBehaviour
                 }
             }
         }
-        if (damage < 10)
+        if (damage < 10)                                          //데미지가 10 미만일 경우
         {
-            units = damage % 10;
+            units = damage;                                                                                      //데
 
-            particle[0].particle_[pCount].textureSheetAnimation.SetSprite(0, gameManager.damageSprite[units]);
+            particle[0].particle_[pCount].textureSheetAnimation.SetSprite(0, gameManager.damageSprite[units]);        //파티클 시스템의 텍스쳐시트애니메이션의 스프라이트를 
             particle[0].particle_[pCount].transform.position = new Vector3(damageObj.transform.position.x,
                                                    damageObj.transform.position.y, damageObj.transform.position.z);
             particle[0].particle_[pCount].Emit(1);
@@ -419,7 +422,7 @@ public class MonsterScript : MonoBehaviour
             if (pCount >= damageParticle.Length)
                 pCount = 0;
         }
-        else if (10 <= damage && damage < 100)
+        else if (10 <= damage && damage < 100)                    //데미지가 10 이상 100 미만일 경우우
         {
             units = damage % 10;
             tens = damage / 10;
@@ -439,7 +442,7 @@ public class MonsterScript : MonoBehaviour
             if (pCount >= damageParticle.Length)
                 pCount = 0;
         }
-        else if (100 <= damage && damage < 1000)
+        else if (100 <= damage && damage < 1000)                  //데미지가 100 이상 1000 미만일 경우
         {
             units = damage % 10;
             tens = (damage / 10) % 10;
