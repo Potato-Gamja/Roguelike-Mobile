@@ -411,21 +411,21 @@ public class MonsterScript : MonoBehaviour
         }
         if (damage < 10)                                          //데미지가 10 미만일 경우
         {
-            units = damage;                                                                                      //데
+            units = damage;                                                                                           //일의 자리의 데미지 인덱스 값
 
-            particle[0].particle_[pCount].textureSheetAnimation.SetSprite(0, gameManager.damageSprite[units]);        //파티클 시스템의 텍스쳐시트애니메이션의 스프라이트를 
-            particle[0].particle_[pCount].transform.position = new Vector3(damageObj.transform.position.x,
+            particle[0].particle_[pCount].textureSheetAnimation.SetSprite(0, gameManager.damageSprite[units]);        //파티클 시스템의 텍스쳐시트애니메이션의 스프라이트를 일의 자리 데미지 인덱스 값의 스프라이트로 설정
+            particle[0].particle_[pCount].transform.position = new Vector3(damageObj.transform.position.x,            //파티클의 위치 조정
                                                    damageObj.transform.position.y, damageObj.transform.position.z);
-            particle[0].particle_[pCount].Emit(1);
+            particle[0].particle_[pCount].Emit(1);                                                                    //파티클 입자를 1개 방출
 
-            pCount++;
-            if (pCount >= damageParticle.Length)
+            pCount++;                                                                                                 //데미지 파티클의 인덱스 값 증가
+            if (pCount >= damageParticle.Length)                                                                      //데미지 파티클의 인덱스 값이 오버 시 0으로 초기화
                 pCount = 0;
         }
         else if (10 <= damage && damage < 100)                    //데미지가 10 이상 100 미만일 경우우
         {
-            units = damage % 10;
-            tens = damage / 10;
+            units = damage % 10;                                  //데미지의 일의 자리를 구하기 위해 나머지 연산자 사용
+            tens = damage / 10;                                   //데미지의 십의 자리를 구하기 위해 10으로 나누기 사용
 
             particle[0].particle_[pCount].textureSheetAnimation.SetSprite(0, gameManager.damageSprite[units]);
             particle[1].particle_[pCount].textureSheetAnimation.SetSprite(0, gameManager.damageSprite[tens]);
@@ -444,9 +444,9 @@ public class MonsterScript : MonoBehaviour
         }
         else if (100 <= damage && damage < 1000)                  //데미지가 100 이상 1000 미만일 경우
         {
-            units = damage % 10;
-            tens = (damage / 10) % 10;
-            hunbreds = damage / 100;
+            units = damage % 10;                                  //데미지의 일의 자리를 구하기 위해 나머지 연산자 사용
+            tens = (damage / 10) % 10;                            //데미지의 십의 자리를 구하기 위해 나누기와 나머지 연산자 사용
+            hunbreds = damage / 100;                              //데미지의 백의 자리를 구하기 위해 나누기 연산자 사용용
 
             particle[0].particle_[pCount].textureSheetAnimation.SetSprite(0, gameManager.damageSprite[units]);
             particle[1].particle_[pCount].textureSheetAnimation.SetSprite(0, gameManager.damageSprite[tens]);
@@ -462,36 +462,6 @@ public class MonsterScript : MonoBehaviour
             particle[0].particle_[pCount].Emit(1);
             particle[1].particle_[pCount].Emit(1);
             particle[2].particle_[pCount].Emit(1);
-
-            pCount++;
-            if (pCount >= damageParticle.Length)
-                pCount = 0;
-        }
-        else if (1000 <= damage)
-        {
-            units = damage % 10;
-            tens = (damage / 10) % 10;
-            hunbreds = (damage / 100) % 10;
-            thousands = damage / 1000;
-
-            particle[0].particle_[pCount].textureSheetAnimation.SetSprite(0, gameManager.damageSprite[units]);
-            particle[1].particle_[pCount].textureSheetAnimation.SetSprite(0, gameManager.damageSprite[tens]);
-            particle[2].particle_[pCount].textureSheetAnimation.SetSprite(0, gameManager.damageSprite[hunbreds]);
-            particle[3].particle_[pCount].textureSheetAnimation.SetSprite(0, gameManager.damageSprite[thousands]);
-
-            particle[0].particle_[pCount].transform.position = new Vector3(damageObj.transform.position.x + 0.21f,
-                                                   damageObj.transform.position.y, damageObj.transform.position.z);
-            particle[1].particle_[pCount].transform.position = new Vector3(damageObj.transform.position.x + 0.07f,
-                                                   damageObj.transform.position.y, damageObj.transform.position.z);
-            particle[2].particle_[pCount].transform.position = new Vector3(damageObj.transform.position.x - 0.07f,
-                                                   damageObj.transform.position.y, damageObj.transform.position.z);
-            particle[3].particle_[pCount].transform.position = new Vector3(damageObj.transform.position.x - 0.21f,
-                                                   damageObj.transform.position.y, damageObj.transform.position.z);
-
-            particle[0].particle_[pCount].Emit(1);
-            particle[1].particle_[pCount].Emit(1);
-            particle[2].particle_[pCount].Emit(1);
-            particle[3].particle_[pCount].Emit(1);
 
             pCount++;
             if (pCount >= damageParticle.Length)
