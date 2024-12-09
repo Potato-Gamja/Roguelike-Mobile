@@ -24,8 +24,8 @@ public class MonsterScript : MonoBehaviour
 
     public Animator animator;                                     //몬스터의 애니메이터
 
-    float damageDelay = 0.8f;                                     //몬스터가 플레이어에게 피해를 입히는 쿨타임
-    float damageTime = 0;                                         //시간
+    float damageDelay = 0.8f;                                     //몬스터의 공격 쿨타임
+    float damageTime = 0;                                         //공격 쿨타임 비교 시간
 
     bool isContact = false;                                       //몬스터와 플레이어가 접촉해있는지에 대한 여부
 
@@ -103,101 +103,95 @@ public class MonsterScript : MonoBehaviour
 
     void Update()
     {
-        if (gameManager.isOver)                                                             //게임오버 시 실행 
+        if (gameManager.isOver)                                                             //게임오버 시 리턴
             return;
 
-        damageTime += Time.deltaTime;
+        damageTime += Time.deltaTime;                                                       //공격 쿨타임 비교 시간 값 증가
 
-        if (hp <= 0 && !animator.GetBool("Die"))
+        if (hp <= 0 && !animator.GetBool("Die"))                                            //체력이 0이하와 애니메이터의 파라미터 Die가 거짓일 경우 실행
         {
-            gameManager.AddExp();
-            gameManager.killCount++;
-            monManager.monCount++;
-            isLive = false;
-            isSlow = false;
-            isDecrease = false;
-            blast.blastTarget.Remove(gameObject);
-            col.enabled = false;
-            playerScript.soundManager.PlayMonDeadSound();
-            animator.SetBool("Die", true);
-            StartCoroutine(MonActive());
+            gameManager.AddExp();                                                           //플레이어 경험치 증가
+            gameManager.killCount++;                                                        //처치한 몬스터 수 증가
+            monManager.monCount++;                                                          //몬스터 카운트 증가
+            isLive = false;                                                                 //몬스터의 생존 여부
+            isSlow = false;                                                                 //몬스터의 이동속도 감소 여부
+            isDecrease = false;                                                             //몬스터의 방어력 감소 여부
+            blast.blastTarget.Remove(gameObject);                                           //블래스트의 타겟에서 해당 몬스터 제거
+            col.enabled = false;                                                            //콜라이더 비활성화
+            playerScript.soundManager.PlayMonDeadSound();                                   //몬스터 처치 사운드 재생
+            animator.SetBool("Die", true);                                                  //몬스터 처치 애니메이션 실행이 되게 파라미터 Die를 참으로
+            StartCoroutine(MonActive());                                                    //몬스터의 비활성화 함수
         }
-
-        if (!isLive)
+        
+        if (!isLive)                                                                        //플레이어가 살아있지않을 경우 리턴
             return;
-
-        if (!isContact && playerScript.hp > 0)
+            
+        if (!isContact && playerScript.hp > 0)                                              //플레이어와 접촉해있지 않고 플레이어가 살아있을 경우 실행
         {
-            if (target.position.x <= transform.position.x)
+            if (target.position.x <= transform.position.x)                                  //몬스터가 플레이어의 방향을 바라보게 스프라이트의 플립X을 껐다 켰다
                 spriter.flipX = true;
             else if (target.position.x > transform.position.x)
                 spriter.flipX = false;
         }
         
-        if (!isLive || isHit)
+        if (isHit)                                                                          //몬스터가 피격 시 리턴 -> 맞으면서 움직이지않게, 경직 상태
             return;
-        TargetTracking();
+            
+        TargetTracking();                                                                   //몬스터가 플레이어를 쫓아가는 함수
     }
 
-    IEnumerator MonActive()
+    IEnumerator MonActive()  
     {
-        yield return wait_mon;
+        yield return wait_mon;                                                              //몬스터의 사망 애니메이션 재생 시간
 
-        spriter.color = new Color(255, 255, 255);
-        gameObject.SetActive(false);
+        spriter.color = new Color(255, 255, 255);                                           //몬스터의 컬러값 원래대로
+        gameObject.SetActive(false);                                                        //몬스터 비활성화
 
     }
 
-    void LateUpdate()
+    void LateUpdate()                                                                       //플레이어와 몬스터의 높이 차이에 따라 소팅레이어 값 변경경
     {
         if (playerScript.hp >  0)
         {
-            if (target.transform.position.y + 0.2f > transform.position.y)
+            if (target.transform.position.y + 0.2f > transform.position.y)                  //플레이어가 더 높이 있을 경우
             {
-                spriter.sortingOrder = 103;
+                spriter.sortingOrder = 103;                                                 //플레이어보다 앞으로 보이게 값 변경
             }
-            else if (target.transform.position.y  - 0.2f < transform.position.y)
+            else if (target.transform.position.y  - 0.2f < transform.position.y)            //플레이어가 더 낮게 있을 경우
             {
-                spriter.sortingOrder = 100;
+                spriter.sortingOrder = 100;                                                 //플레이어보다 뒤로 보이게 값 변경
             }
             else
             {
-                spriter.sortingOrder = 101;
+                spriter.sortingOrder = 101;                                                 //그게 아니라면 원래대로
             }
         }
     }
 
-    public void ResetStat()
+    public void ResetStat()                                                                                           //몬스터의 스탯 설정
     {
-        hp = monsterData.hp + (gameManager.time / 5);
-        hp += hp * levelUpScript.monHp;
-        defense = monsterData.defense + levelUpScript.monDefense;
-        damage = monsterData.damage;
-        offense = monsterData.offense + levelUpScript.monOffense;
-        speed = math.floor(Random.Range(monsterData.speed - 0.1f, monsterData.speed + 0.1f) * 10f) / 10f + (monsterData.speed * levelUpScript.monSpeed);
-        knockbackDefense = monsterData.knockbackDefense + levelUpScript.monKnockbackDefense;
-        knockbackTime = monsterData.knockbackTime;
+        hp = monsterData.hp + (gameManager.time / 5);                                                                 //몬스터 데이터의 체력과 시간에 흐름에 따른 추가 체력 합연산                                            
+        defense = monsterData.defense + levelUpScript.monDefense;                                                     //몬스터 데이터의 방어력과 추가 방어력 합연산
+        damage = monsterData.damage;                                                                                  //몬스터 데이터의 데미지 대입
+        offense = monsterData.offense + levelUpScript.monOffense;                                                     //몬스터 데이터의 공격력과 추가 공격력 합연산
+        speed = math.floor(Random.Range(monsterData.speed - 0.1f,                                                     //몬스터 이동속도 랜덤 -+ 0.1값과 추가 이동속도의 합연산 값을 소수점 한자리 버리기
+                            monsterData.speed + 0.1f) * 10f) / 10f + (monsterData.speed * levelUpScript.monSpeed);
+        knockbackDefense = monsterData.knockbackDefense + levelUpScript.monKnockbackDefense;                          //몬스터 데이터의 넉백저항과 추가 넉백저항 합연산
+        knockbackTime = monsterData.knockbackTime;                                                                    //몬스터 데이터의 넉백 쿨타임
 
-        if (offense <= 0)
-            offense = 0;
+        isLive = true;                                                                                                //몬스터 생존 여부
+        isHit = false;                                                                                                //피격 여부
+        col.enabled = true;                                                                                           //콜라이더 활성화
 
-        isLive = true;
-        isHit = false;
-        col.enabled = true;
-
-        animator.SetBool("Die", false);
+        animator.SetBool("Die", false);                                                                               //애니메이터의 파라미터 Die을 거짓으로로
     }
 
-    void TargetTracking()
+    void TargetTracking()                                                                   //몬스터의 Rigidbody을 이용한 이동
     {
-        if (monsterData.name == "Spirit")
-            return;
+        Vector2 dirVec = target.position - rigid.position;                                  //몬스터와 플레이어의 거리
+        Vector2 nextVec = dirVec.normalized * speed * Time.deltaTime;                       //방향 벡터에 이동속도와 델타타임을 곱연산
 
-        Vector2 dirVec = target.position - rigid.position;
-        Vector2 nextVec = dirVec.normalized * speed * Time.deltaTime;
-
-        rigid.MovePosition(rigid.position + nextVec);
-        rigid.velocity = Vector2.zero;
+        rigid.MovePosition(rigid.position + nextVec);                                       //몬스터의 목적지를 향해 이동 
     }
 
     public void Knock_Missile()
