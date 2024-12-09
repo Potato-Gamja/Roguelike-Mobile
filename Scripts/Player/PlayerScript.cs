@@ -1,5 +1,3 @@
-using MagicArsenal;
-using System.Collections;
 using UnityEngine;
 
 public class PlayerScript : MonoBehaviour
@@ -10,10 +8,9 @@ public class PlayerScript : MonoBehaviour
     [SerializeField]
     Scanner scanner;
     [SerializeField]
-    WeaponScript weaponScript
+    WeaponScript weaponScript;
     public SoundManager soundManager;
 
-    private Rigidbody2D rb;
     public Animator animator;
     [SerializeField]
     SpriteRenderer spriter;
@@ -35,7 +32,6 @@ public class PlayerScript : MonoBehaviour
     public Weapon laserEnd;
 
     public GameObject floor;
-    MagicRotation floorRot;
 
     public int playerType;
 
@@ -65,8 +61,6 @@ public class PlayerScript : MonoBehaviour
 
     public bool isSword = true;
     public bool isLaser = false;
-    bool isMove = false;
-    bool isLive = true;
 
     public FloatingJoystick joy;
     public Vector2 minPos;
@@ -79,10 +73,8 @@ public class PlayerScript : MonoBehaviour
         SetData();
 
         hp = levelUpScript.playerData.hp;
-        rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         trans = GetComponent<Transform>();
-        floorRot = GetComponent<MagicRotation>();
 
     }
 
