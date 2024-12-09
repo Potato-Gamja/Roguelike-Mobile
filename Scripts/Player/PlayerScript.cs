@@ -217,7 +217,6 @@ public class PlayerScript : MonoBehaviour
         {
             levelUpScript.sword[levelUpScript.swordCount].SetActive(true);                                            //마법검 활성화
             swords[levelUpScript.swordCount].swordAni.SetBool("isSword", true);                                       //마법검 애니메이션 실행
-            levelUpScript.sword[levelUpScript.swordCount].transform.position = gameObject.transform.position;         //마법검의 위치 조정
             
             soundManager.PlaySwordSound();                                                                            //마법검 사운드 재생
         }
