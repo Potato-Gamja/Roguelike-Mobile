@@ -63,7 +63,7 @@ public class MonManager : MonoBehaviour
     public float minCool;                                //몬스터 이벤트의 경고 오브젝트 스폰시간의 최솟값
     public float maxCool;                                //몬스터 이벤트의 경고 오브젝트 스폰시간의 최댓값
 
-    bool check_0 = false;                               //몬스터 스폰 관련 프로퍼티 설정에 사용되는 불
+    bool check_0 = false;                               //몬스터 스폰 관련 값 설정에 사용되는 불
     bool check_1 = false;
     bool check_2 = false;
     bool check_3 = false;
@@ -140,7 +140,7 @@ public class MonManager : MonoBehaviour
         time += Time.deltaTime;
         time_ += Time.deltaTime;
 
-        SetSpawn();                                                                     //몬스터 스폰 관련 프로퍼티 설정
+        SetSpawn();                                                                     //몬스터 스폰 관련 값 설정
 
         if (time >= spawnTime)                                                          //기본 몬스터 스폰
         {
@@ -163,7 +163,7 @@ public class MonManager : MonoBehaviour
 
     void SetSpawn()
     {
-        if (monCount < 300 && !monEvent_1 && !check_0)                                 //처치한 몬스터의 수에 따른 경고&몬스터 스폰 관련 프로퍼티 설정
+        if (monCount < 300 && !monEvent_1 && !check_0)                                 //처치한 몬스터의 수에 따른 경고&몬스터 스폰 관련 값 설정
         {
             check_0 = true;                                                            //조건문이 한번만 실행되게 check_0 값을 변경
             eventTime = 3.0f;                                                          //몬스터 이벤트 스폰 시간
@@ -256,7 +256,7 @@ public class MonManager : MonoBehaviour
             yield return warnRan;
         }
 
-        if (monEvent_1)                                                                 //이벤트 종료 후 프로퍼티를 원래 값으로 돌려놓기
+        if (monEvent_1)                                                                 //이벤트 종료 후 값를 원래 값으로 돌려놓기
         {
             if (monCount < 300)
             {
