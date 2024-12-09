@@ -12,12 +12,12 @@ public class Weapon : MonoBehaviour
     MagicBeamStatic magicBeamStatic;   //에셋의 스크립트, 레이저 길이를 조절
     GameObject player;
     PlayerScript playerScript;
-
+    LevelUpScript levelUpScript;
+    
     public Scanner scanner;            //스캐너
     
     public Animator swordAni;          //마법검 애니메이터
 
-    LevelUpScript levelUpScript;
     public string type;                //무기 종류를 구분하는 문자열
 
     public int hitCount;               //타격 회수
