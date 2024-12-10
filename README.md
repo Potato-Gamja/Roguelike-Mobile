@@ -28,5 +28,7 @@ AOE Magic spells Vol.1 / by Hovl Studio (스킬 이펙트, 효과음)
 
 Combat Magic Spells - Volume II / by Alan Dalcastagne da Cunha (효과음)
 
+등등...
+
 # 플레이 영상: 
 https://youtu.be/ND66nvTL4Mo
