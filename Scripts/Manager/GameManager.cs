@@ -163,7 +163,8 @@ public class GameManager : MonoBehaviour
     }
     //다시하기 - 로딩씬
     public void ReStart()
-    {
+    {    
+        Time.timeScale = 1f;
         LoadingSceneScript.LoadScene("GameScene");
     }
     //로비화면 - 로딩씬
