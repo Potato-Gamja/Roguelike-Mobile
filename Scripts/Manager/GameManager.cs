@@ -152,10 +152,11 @@ public class GameManager : MonoBehaviour
         playerScript.SetData();                    //플레이어 스탯 재설정
         hpBar.fillAmount = playerScript.hp / playerScript.maxHp; //체력바 조정
 
-        levelText.text = "LV. " + playerLevel;
-        levelUpScript.WeaponSelectEvent_0();
+        levelText.text = "LV. " + playerLevel;     //플레이어 레벨 텍스트 변경
+        SoundManager.LevelUpSound();               //레벨 업 사운드 재생
+        levelUpScript.WeaponSelectEvent_0();       //레벨 업 이벤트 실행
 
-        if (exExp >= maxExp)
+        if (exExp >= maxExp)                       //경험치 증발 방지
         {
             curExp = maxExp;
             exExp -= maxExp;
