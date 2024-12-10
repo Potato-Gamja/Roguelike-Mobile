@@ -7,7 +7,7 @@
 3. 개발기간: 2024.07 ~ 2024.12
 
 
-사용한 에셋:
+# 사용한 에셋:
 
 Brown Rock Tileset - Top-down 32x32 Pixel-art / by Mushra Games (맵)
 
@@ -19,7 +19,6 @@ Joystick Pack / by Fenerax Studios (조이스틱)
 
 FREE Casual Game SFX Pack / by Dustyromm (효과음)
 
-
 Pixel Heroes Megapck / by Hippo (캐릭터, 몬스터 및 스킨 시스템)
 
 Magic Arsenal / by Archanor VFX (스킬 이펙트, 효과음)
@@ -28,7 +27,5 @@ AOE Magic spells Vol.1 / by Hovl Studio (스킬 이펙트, 효과음)
 
 Combat Magic Spells - Volume II / by Alan Dalcastagne da Cunha (효과음)
 
-
-
-
-플레이 영상: https://youtu.be/ND66nvTL4Mo
+# 플레이 영상: 
+https://youtu.be/ND66nvTL4Mo
