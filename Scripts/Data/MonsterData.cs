@@ -18,4 +18,6 @@ public class MonsterData : ScriptableObject
     public float speed;                 //몬스터의 이동속도
     
     public float knockbackDefense;      //몬스터의 넉백 저항
+    
+    public float knockbackTime;         //몬스터의 넉백 쿨타임
 }
