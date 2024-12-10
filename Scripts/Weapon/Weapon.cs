@@ -261,40 +261,42 @@ public class Weapon : MonoBehaviour
 
     }
 
-    public void SwordDis()                                                            //마법검 비활성화
+    public void SwordDis()                                                                   //마법검 비활성화
     {
         levelUpScript.sword[levelUpScript.swordCount].SetActive(false);
     }
 
-    void OnTriggerEnter2D(Collider2D collision)                                       //
+    void OnTriggerEnter2D(Collider2D collision)                                              //트리거 콜라이더 접촉 시
     {
-        if (collision.CompareTag("Monster") && type == "missile" && hitCount > 0)
+        if (collision.CompareTag("Monster") && type == "missile" && hitCount > 0)            //태그 몬스터 & 무기 미사일 & 타격 수가 1이상일 경우
         {
-            if (target == null)
+            if (target == null)                                                              //타겟이 없을 경우
             {
-                target = collision.gameObject;
+                target = collision.gameObject;                                               //콜라이더 게임오브젝트를 타겟으로
             }
 
-            if (target != null)
+            if (target != null)                                                              //타겟이 있을 경우
             {
-                hitCount--;
+                hitCount--;                                                                  //타격 수 감소
 
-                MonsterScript targetMon = target.GetComponent<MonsterScript>();
+                MonsterScript targetMon = target.GetComponent<MonsterScript>();              //타겟의 몬스터 스크립트 가져오기
 
-                float totalDamage;
-                bool isCritical = false;
+                float totalDamage;                                                           //총 데미지
+                bool isCritical = false;                                                     //치명타 여부 비활성화
 
-                float critical = math.floor(Random.Range(0f, 100f));
-                float missileDamage = Random.Range(levelUpScript.missileData.damage - 2f, levelUpScript.missileData.damage + 3f);
+                float critical = math.floor(Random.Range(0f, 100f));                         //치명타 확률
+                
+                float missileDamage = Random.Range(levelUpScript.missileData.damage - 2f,    //미사일 데미지 -2 ~ +3
+                                                   levelUpScript.missileData.damage + 3f); 
 
-                if (!levelUpScript.playerData.isTrueDamage)
+                if (!levelUpScript.playerData.isTrueDamage)                                  //고정 데미지 여부 확인, 미사일의 데미지 계산
                     totalDamage = math.floor((playerScript.offense * 0.01f * missileDamage - targetMon.defense));
                 else
                     totalDamage = math.floor((playerScript.offense * 0.01f * missileDamage));
 
-                if (critical <= playerScript.critical + levelUpScript.missileData.critical)
+                if (critical <= playerScript.critical + levelUpScript.missileData.critical)  //치명타 확률 계산
                 {
-                    totalDamage = math.floor(totalDamage * 1.8f);
+                    totalDamage = math.floor(totalDamage * 1.8f);                            //치명타 시 데미지 증가
                     isCritical = true;
                 }
                 else
@@ -302,28 +304,28 @@ public class Weapon : MonoBehaviour
                     isCritical = false;
                 }
 
-                if (totalDamage < 1f)
+                if (totalDamage < 1f)                                                        //데미지가 1보다 낮을 경우, 1로
                     totalDamage = 1f;
 
-                totalDamage = math.floor(totalDamage);
+                totalDamage = math.floor(totalDamage);                                       //데미지 소수점 버리기
 
-                targetMon.DamageText(totalDamage, isCritical);
-                targetMon.animator.SetTrigger("Hit");
-                targetMon.hp = targetMon.hp - totalDamage;
-                targetMon.Knock_Missile();
+                targetMon.DamageText(totalDamage, isCritical);                               //데미지와 치명타 여부 전달
+                targetMon.animator.SetTrigger("Hit");                                        //몬스터 타격 애니메이션 재생
+                targetMon.hp = targetMon.hp - totalDamage;                                   //몬스터 체력 감소
+                targetMon.Knock_Missile();                                                   //미사일 넉백 실행
 
-                if (hitCount < 1)
+                if (hitCount < 1)                                                            //타격 1 미만 시
                 {
-                    circleCollider.enabled = false;
-                    target = null;
-                    gameObject.SetActive(false);
+                    circleCollider.enabled = false;                                          //콜라이더 비활성화
+                    target = null;                                                           //타겟 초기화
+                    gameObject.SetActive(false);                                             //미사일 비활성화
                 }
-                target = null;
+                target = null;                                                               //타겟 초기화화
 
             }
         }
 
-        if (collision.CompareTag("Monster") && type == "blast")
+        if (collision.CompareTag("Monster") && type == "blast")                              //태그 몬스터 & 무기 블래스트
         {
             MonsterScript targetMon = collision.gameObject.GetComponent<MonsterScript>();
 
@@ -341,7 +343,7 @@ public class Weapon : MonoBehaviour
 
             if (critical <= playerScript.critical + levelUpScript.blastData.critical)
             {
-                totalDamage = math.floor(totalDamage * (1.8f + levelUpScript.blastData.criticalDamage));
+                totalDamage = math.floor(totalDamage * (1.8f + levelUpScript.blastData.criticalDamage));      //기본 치명타 데미지 + 블래스트 능력의 추가 치명타 데미지
                 isCritical = true;
             }
             else
@@ -361,21 +363,21 @@ public class Weapon : MonoBehaviour
 
         }
 
-        if (collision.CompareTag("Monster") && type == "floor")
+        if (collision.CompareTag("Monster") && type == "floor")              //태그 몬스터 & 무기 장판
         {
-            floorTarget.Add(collision.gameObject);
+            floorTarget.Add(collision.gameObject);                           //장판 타겟 리스트에 콜라이더 게임오브젝트 추가
 
         }
     }
 
-    void OnTriggerStay2D(Collider2D collision)
+    void OnTriggerStay2D(Collider2D collision)                                     //트리거 콜라이더 접촉 중일 시
     {
         if (collision.CompareTag("Monster") && type == "laserEnd" && hitCount > 0)
         {
             if (target != null)
             {
                 isHit= true;
-                if (time > hitTime)
+                if (time > hitTime)                                                //레이저 타격 딜레이
                 {
                     time = 0;
 
@@ -420,18 +422,18 @@ public class Weapon : MonoBehaviour
             {
                 MonsterScript targetMon = floorTarget[i].GetComponent<MonsterScript>();
 
-                if (!targetMon.isSlow)
-                {
+                if (!targetMon.isSlow)                    //몬스터의 이동속도 감소 비활성화 시
+                {                                         //이동속도 감소
                     targetMon.speed = targetMon.speed_Defalt - (targetMon.speed_Defalt / 100 * levelUpScript.floorData.slow);
-                    targetMon.isSlow = true;
+                    targetMon.isSlow = true;              //중첩 안되게 이동속도 감소 여부 체크
                 }
-                if (!targetMon.isDecrease)
-                {
+                if (!targetMon.isDecrease)                //몬스터의 방어력 감소 활성화 시
+                {                                         //방어력 감소
                     targetMon.defense = targetMon.defense_Defalt - levelUpScript.floorData.decrease;
-                    targetMon.isDecrease = true;
+                    targetMon.isDecrease = true;          //중첩 안되게 방어력 감소 여부 체크
                 }
             }
-            if (time >= levelUpScript.floorData.attackDelay)
+            if (time >= levelUpScript.floorData.attackDelay)    //장판 쿨타임
             {
                 time = 0f;
                 for(int i = floorTarget.Count - 1; i > 0; i--)
@@ -457,27 +459,23 @@ public class Weapon : MonoBehaviour
         }
     }
 
-    void OnTriggerExit2D(Collider2D collision)
+    void OnTriggerExit2D(Collider2D collision)                         //트리거 콜라이더 접촉 중지 시
     {
-        if (collision.CompareTag("Monster") && type == "laserEnd")
-        {
-
-        }
-        if (collision.CompareTag("Monster") && type == "floor")
+        if (collision.CompareTag("Monster") && type == "floor")        //태그 몬스터 & 무기 장판
         {
             MonsterScript targetMon = collision.GetComponent<MonsterScript>();
 
-            if (targetMon.isSlow)
+            if (targetMon.isSlow)                                      //몬스터의 이동속도 감소 활성화 시
             {
-                targetMon.speed = targetMon.speed_Defalt;
-                targetMon.isSlow = false;
+                targetMon.speed = targetMon.speed_Defalt;              //원래 이동속도로 변경
+                targetMon.isSlow = false;                              //이동속도 감소 여부 비활성화
             }
-            if (targetMon.isDecrease)
+            if (targetMon.isDecrease)                                  //몬스터의 방어력 감소 활성화 시
             {
-                targetMon.defense = targetMon.defense_Defalt;
-                targetMon.isDecrease = false;
+                targetMon.defense = targetMon.defense_Defalt;          //원래 방어력으로 변경
+                targetMon.isDecrease = false;                          //방어력 감소 여부 비활성화
             }
-            floorTarget.Remove(collision.gameObject);
+            floorTarget.Remove(collision.gameObject);                  //장판 타겟의 리스트에서 해당 게임오브젝트 제거
         }
     }
 }
