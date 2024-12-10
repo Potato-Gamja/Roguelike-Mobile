@@ -13,8 +13,8 @@ using Assets.PixelFantasy.PixelHeroes.Common.Scripts.CharacterScripts;    //픽�
         public int coin;                                          //플레이어의 재화
     }
 
-public class DataManager : MonoBehaviour
-{
+public class DataManager : MonoBehaviour                          //제이슨 로드&저장 기능 구현만...
+{                                                                 //
     public static DataManager instance;
 
     public CharacterBuilder builder;
