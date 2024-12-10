@@ -229,7 +229,7 @@ public class MonsterScript : MonoBehaviour
         isHit = false;                                                                    //피격 여부
     }
 
-    IEnumerator BlastKnockBack(float power, GameObject blast)                             //이후 아래는 위와 동일
+    IEnumerator BlastKnockBack(float power, GameObject blast)                            
     {
         yield return wait_1;
         Vector3 blastPos = blast.transform.position;
@@ -422,10 +422,10 @@ public class MonsterScript : MonoBehaviour
             if (pCount >= damageParticle.Length)                                                                      //데미지 파티클의 인덱스 값이 오버 시 0으로 초기화
                 pCount = 0;
         }
-        else if (10 <= damage && damage < 100)                    //데미지가 10 이상 100 미만일 경우우
+        else if (10 <= damage && damage < 100)                                                                        //데미지가 10 이상 100 미만일 경우우
         {
-            units = damage % 10;                                  //데미지의 일의 자리를 구하기 위해 나머지 연산자 사용
-            tens = damage / 10;                                   //데미지의 십의 자리를 구하기 위해 10으로 나누기 사용
+            units = damage % 10;                                                                                      //데미지의 일의 자리를 구하기 위해 나머지 연산자 사용
+            tens = damage / 10;                                                                                       //데미지의 십의 자리를 구하기 위해 10으로 나누기 사용
 
             particle[0].particle_[pCount].textureSheetAnimation.SetSprite(0, gameManager.damageSprite[units]);
             particle[1].particle_[pCount].textureSheetAnimation.SetSprite(0, gameManager.damageSprite[tens]);
@@ -442,11 +442,11 @@ public class MonsterScript : MonoBehaviour
             if (pCount >= damageParticle.Length)
                 pCount = 0;
         }
-        else if (100 <= damage && damage < 1000)                  //데미지가 100 이상 1000 미만일 경우
+        else if (100 <= damage && damage < 1000)                                                                      //데미지가 100 이상 1000 미만일 경우
         {
-            units = damage % 10;                                  //데미지의 일의 자리를 구하기 위해 나머지 연산자 사용
-            tens = (damage / 10) % 10;                            //데미지의 십의 자리를 구하기 위해 나누기와 나머지 연산자 사용
-            hunbreds = damage / 100;                              //데미지의 백의 자리를 구하기 위해 나누기 연산자 사용용
+            units = damage % 10;                                                                                      //데미지의 일의 자리를 구하기 위해 나머지 연산자 사용
+            tens = (damage / 10) % 10;                                                                                //데미지의 십의 자리를 구하기 위해 나누기와 나머지 연산자 사용
+            hunbreds = damage / 100;                                                                                  //데미지의 백의 자리를 구하기 위해 나누기 연산자 사용용
 
             particle[0].particle_[pCount].textureSheetAnimation.SetSprite(0, gameManager.damageSprite[units]);
             particle[1].particle_[pCount].textureSheetAnimation.SetSprite(0, gameManager.damageSprite[tens]);
