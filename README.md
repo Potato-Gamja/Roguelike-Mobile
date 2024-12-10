@@ -6,7 +6,8 @@
 2. 개발환경: Unity
 3. 개발기간: 2024.07 ~ 2024.12
 
-사용한 에셋
+
+사용한 에셋:
 
 Brown Rock Tileset - Top-down 32x32 Pixel-art / by Mushra Games (맵)
 
@@ -26,6 +27,7 @@ Magic Arsenal / by Archanor VFX (스킬 이펙트, 효과음)
 AOE Magic spells Vol.1 / by Hovl Studio (스킬 이펙트, 효과음)
 
 Combat Magic Spells - Volume II / by Alan Dalcastagne da Cunha (효과음)
+
 
 
 
