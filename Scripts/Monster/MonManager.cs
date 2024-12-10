@@ -100,7 +100,7 @@ public class MonManager : MonoBehaviour
             monObject1.SetActive(false);                                                           //생성한 몬스터 오브젝트 비활성화
         }
 
-        monPrefabs_2 = new GameObject[monPool];                                                    //이후 아래는 위와 동일
+        monPrefabs_2 = new GameObject[monPool];                                                  
         for (int i = 0; i < monPrefabs_2.Length; i++)
         {
             GameObject monObject2 = Instantiate(mons_2[Random.Range(0, mons_2.Length)]);
@@ -173,7 +173,7 @@ public class MonManager : MonoBehaviour
             minCount = 3;                                                              //몬스터 이벤트의 최소 스폰 수
             maxCount = 5;                                                              //몬스터 이벤트의 최대 스폰 수
         }
-        else if (monCount >= 300 && monCount < 700 && !monEvent_1 && !check_1)         //이후 아래는 위와 동일
+        else if (monCount >= 300 && monCount < 700 && !monEvent_1 && !check_1)        
         {
             check_1 = true;
             eventTime = 5.0f;
@@ -247,7 +247,7 @@ public class MonManager : MonoBehaviour
             warnScript[wCount].Set(posX1, posY1, warnTime);                             //경고 스크립트의 함수 실행
             wCount++;                                                                   //경고 배열의 인덱스 값 증가
 
-            if (mCount >= monPool)                                                      //경고와 몬스터의 인덱스 값이 오버될 경우 0으로 초기화
+            if (mCount >= monPool)                                                      
                 mCount = 0;
             if (wCount >= warnPool)
                 wCount = 0;
@@ -337,7 +337,7 @@ public class MonManager : MonoBehaviour
                 mCount++;
                 break;
         }
-        if (mCount >= monPool)                                                          //경고와 몬스터의 인덱스 값이 오버될 경우 0으로 초기화
+        if (mCount >= monPool)                                                         
             mCount = 0;
         if (wCount >= warnPool)
             wCount = 0;
