@@ -14,34 +14,34 @@ public class Weapon : MonoBehaviour
     PlayerScript playerScript;
     LevelUpScript levelUpScript;
     
-    public Scanner scanner;            //스캐너
+    public Scanner scanner;                  //스캐너
     
-    public Animator swordAni;          //마법검 애니메이터
+    public Animator swordAni;                //마법검 애니메이터
 
-    public string type;                //무기 종류를 구분하는 문자열
+    public string type;                      //무기 종류를 구분하는 문자열
 
-    public int hitCount;               //타격 회수
-    public float time = 0;             //무기 타이머
+    public int hitCount;                     //타격 회수
+    public float time = 0;                   //무기 타이머
 
-    [Header("Laser Weapon")]           //레이저 무기
-    public GameObject laserBeam;       //레이저 빔
+    [Header("Laser Weapon")]                 //레이저 무기
+    public GameObject laserBeam;             //레이저 빔
     [SerializeField]
-    GameObject orb;                    //레이저 오브
+    GameObject orb;                          //레이저 오브
     [SerializeField]
-    Weapon laserEndPoint;              //레이저 타격 지점
-    CircleCollider2D circleCollider;   //레이저 콜라이더
-    MagicBeamStatic laserLength;       //레이저 길이
+    Weapon laserEndPoint;                    //레이저 타격 지점
+    CircleCollider2D circleCollider;         //레이저 콜라이더
+    MagicBeamStatic laserLength;             //레이저 길이
     [SerializeField]    
-    Weapon laserWeapon;                //레이저 스크립트
-    Scanner laserScanner;              //레이저 스캐너
-    public bool isHit = false;         //레이저 타격 여부
+    Weapon laserWeapon;                      //레이저 스크립트
+    Scanner laserScanner;                    //레이저 스캐너
+    public bool isHit = false;               //레이저 타격 여부
     [SerializeField]
-    float rotSpeed = 999999;           //레이저의 회전속도
-    public Vector3 targetPos;          //타겟의 위치
-    Vector3 dir;                       //타겟과의 거리
-    public GameObject laser;           //레이저 게임오브젝트
-    public GameObject target;          //레이저의 타겟 게임오브젝트트
-    public float hitTime = 0.1f;       //레이저 타격 딜레이
+    float rotSpeed = 999999;                 //레이저의 회전속도
+    public Vector3 targetPos;                //타겟의 위치
+    Vector3 dir;                             //타겟과의 거리
+    public GameObject laser;                 //레이저 게임오브젝트
+    public GameObject target;                //레이저의 타겟 게임오브젝트트
+    public float hitTime = 0.1f;             //레이저 타격 딜레이
 
     [Header("Blast Weapon")]                 //블래스트 무기
     public List<GameObject> blastTarget;     //게임오브젝트형 리스트의 블래스트 타겟
