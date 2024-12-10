@@ -7,6 +7,7 @@
 3. 개발기간: 2024.07 ~ 2024.12
 
 사용한 에셋
+
 Brown Rock Tileset - Top-down 32x32 Pixel-art / by Mushra Games (맵)
 
 Joystick Pack / by Fenerax Studios (조이스틱)
