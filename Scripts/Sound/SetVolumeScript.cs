@@ -4,10 +4,10 @@ using UnityEngine.UI;
 
 public class SetVolumeScript : MonoBehaviour
 {
-    public AudioMixer mixer;
-    public Slider slider;
+    public AudioMixer mixer;            //오디오 믹서
+    public Slider slider;               //슬라이더
     [SerializeField]
-    string type;
+    string type;                        //오디오 종류
 
     void Start()
     {
