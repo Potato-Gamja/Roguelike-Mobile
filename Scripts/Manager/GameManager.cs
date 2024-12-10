@@ -12,16 +12,13 @@ public class GameManager : MonoBehaviour
     public MonManager monManager;
 
     [SerializeField]
-    AudioMixerScript mixer;
+    AudioMixerScript mixer;                  //오디오 믹서 스크립트
     [SerializeField]
     Slider bgmSlider;
     [SerializeField]
     Slider sfxSlider;
 
-    public Sprite[] damageSprite;        //데미지 표시를 위한 스프라이트
-
-    public GameObject[] weapon;
-    public int weaponType;
+    public Sprite[] damageSprite;            //데미지 표시를 위한 스프라이트
 
     public bool isSpawn = true;
     public bool isOver = false;
@@ -44,18 +41,18 @@ public class GameManager : MonoBehaviour
     Text levelText;
     int playerLevel = 1;
 
-    public GameObject joystick;
+    public GameObject joystick;               //조이스틱
     public FloatingJoystick floatJoystick;
 
     [SerializeField]
-    Dropdown languageDown;                //로컬라이제이션 드롭다운
+    Dropdown languageDown;                    //로컬라이제이션 드롭다운
     [SerializeField]
-    GameObject settingPanel;              //설정창
+    GameObject settingPanel;                  //설정창
     [SerializeField]
-    GameObject gameoverPanel;             //게임오버창
+    GameObject gameoverPanel;                 //게임오버창
 
-    bool isClick = false;                 //정지버튼 눌렀는지 여부 체크
-
+    bool isClick = false;                     //정지버튼 눌렀는지 여부 체크
+    
     public Text kill_;
     public Text time_;
 
@@ -128,6 +125,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    //경험치 증가
     public void AddExp()
     {
         if (expBar.fillAmount == 1)
@@ -136,26 +134,25 @@ public class GameManager : MonoBehaviour
             curExp++;
 
         expBar.fillAmount = curExp / maxExp;
-
     }
 
+    //경험치 초기화
     void ResetExp(float newExp)
     {
-        curExp = 0;
-        maxExp = newExp;
+        curExp = 0;                                //임시 경험치
+        maxExp = newExp;                           //필요한 경험치 갱신
 
         expBar.fillAmount = curExp / maxExp;
 
-        playerLevel++;
-        levelUpScript.playerData.maxHp++;
-        levelUpScript.playerScript.hp++;
-        levelUpScript.playerData.offense += 0.5f;
+        playerLevel++;                             //플레이어 레벨 증가
+        levelUpScript.playerData.maxHp++;          //플레이어 최대 체력 증가
+        levelUpScript.playerScript.hp++;           //플레이어 현재 체력 증가
+        levelUpScript.playerData.offense += 0.5f;  //플레이어 공격력 증가
 
-        playerScript.SetData();
-        hpBar.fillAmount = playerScript.hp / playerScript.maxHp;
+        playerScript.SetData();                    //플레이어 스탯 재설정
+        hpBar.fillAmount = playerScript.hp / playerScript.maxHp; //체력바 조정
 
         levelText.text = "LV. " + playerLevel;
-        //레벨업 효과 사운드
         levelUpScript.WeaponSelectEvent_0();
 
         if (exExp >= maxExp)
@@ -166,12 +163,13 @@ public class GameManager : MonoBehaviour
 
         expBar.fillAmount = curExp / maxExp;
     }
+    
     //게임오버
     void GameOver()
     {
         isOver = true;
         gameoverPanel.SetActive(true);
-        //게임오버 시 생존한 시간과 처치한 몬스터의 수의 값 입력
+        //게임오버 시 생존한 시간과 처치한 몬스터의 수의 값 문자열화
         time_.text = time.ToString();
         kill_.text = killCount.ToString();
         expBar.fillAmount = curExp / maxExp;
