@@ -213,34 +213,34 @@ public class LevelUpScript : MonoBehaviour
         playerData.critical = playerData.baseCritical;
     }
     
-    void SetStatWeapon()                                                                  //무기 별로 자식 오브젝트에 있는 능력을 각 무기의 배열에 넣기기
+    void SetStatWeapon()                                                         //무기 별로 자식 오브젝트에 있는 능력을 각 무기의 배열에 넣기기
     {
 
-        for (int i = 0; i < missileWeapon.transform.childCount; i++)                      //미사일 무기 그룹의 자식을 미사일 무기 배열에 순차적으로 추가
+        for (int i = 0; i < missileWeapon.transform.childCount; i++)                     
         {
             missileWeapons[i] = missileWeapon.transform.GetChild(i).gameObject;
         }
-        for (int i = 0; i < swordWeapon.transform.childCount; i++)                        //마법검 무기 그룹의 자식을 미사일 무기 배열에 순차적으로 추가
+        for (int i = 0; i < swordWeapon.transform.childCount; i++)                     
         {
             swordWeapons[i] = swordWeapon.transform.GetChild(i).gameObject;
         }
-        for (int i = 0; i < laserWeapon.transform.childCount; i++)                        //레이저 무기 그룹의 자식을 미사일 무기 배열에 순차적으로 추가
+        for (int i = 0; i < laserWeapon.transform.childCount; i++)                        
         {
             laserWeapons[i] = laserWeapon.transform.GetChild(i).gameObject;
         }
-        for (int i = 0; i < blastWeapon.transform.childCount; i++)                        //블래스트 무기 그룹의 자식을 미사일 무기 배열에 순차적으로 추가
+        for (int i = 0; i < blastWeapon.transform.childCount; i++)                        
         {
             blastWeapons[i] = blastWeapon.transform.GetChild(i).gameObject;
         }
-        for (int i = 0; i < floorWeapon.transform.childCount; i++)                        //장판 무기 그룹의 자식을 미사일 무기 배열에 순차적으로 추가
+        for (int i = 0; i < floorWeapon.transform.childCount; i++)                     
         {
             floorWeapons[i] = floorWeapon.transform.GetChild(i).gameObject;
         }
     }
     
-    void SetStar()                                                                                   //무기 능력 레벨을 표시하는 별 세팅
+    void SetStar()                                                              //무기 능력 레벨을 표시하는 별 세팅
     {
-        mStarPanel_0 = missileWeapons[0].transform.GetChild(4).gameObject;                           //미사일 무기 자식오브젝트 중 판넬 대입
+        mStarPanel_0 = missileWeapons[0].transform.GetChild(4).gameObject;                       
         mStarPanel_1 = missileWeapons[1].transform.GetChild(4).gameObject;
         mStarPanel_2 = missileWeapons[2].transform.GetChild(4).gameObject;
         mStarPanel_3 = missileWeapons[3].transform.GetChild(4).gameObject;
@@ -248,8 +248,8 @@ public class LevelUpScript : MonoBehaviour
 
         for (int i = 0; i < 5; i++)
         {
-            mStar_0[i] = mStarPanel_0.transform.GetChild(i).gameObject.GetComponent<Image>();        //판넬의 자식오브젝트인 별 이미지 컴포넌트를 대입
-        }                                                                                            //이후 아래는 위와 동일
+            mStar_0[i] = mStarPanel_0.transform.GetChild(i).gameObject.GetComponent<Image>();       
+        }                                                                                            
         for (int i = 0; i < 5; i++)
         {
             mStar_1[i] = mStarPanel_1.transform.GetChild(i).gameObject.GetComponent<Image>();
@@ -368,12 +368,12 @@ public class LevelUpScript : MonoBehaviour
 
     public void WeaponsArr()                                            
     {
-        i = 0;                                                                      //무작위 무기 배열의 최대 인덱스 값으로 쓰일 i에 0을 대입
+        i = 0;                                                                      //무작위 무기 배열의 최대 인덱스 값 초기화
 
         if (missile_Lv_0 < 5)                                                       //무기 능력 별로 최대 레벨 달성 시 배열에 추가하지 않기 위한 조건문
         {
             tempWeapons[i] = missileWeapons[0];
-            i++;                                                                    //인덱스 값 i 증가 1
+            i++;                                                                   
         }
         if (missile_Lv_1 < 5)
         {
@@ -397,7 +397,7 @@ public class LevelUpScript : MonoBehaviour
         }
 
         if (isSword)                                                               //무기를 잠금해제 했는지 확인하는 조건문
-        {                                                                          //이후 아래는 위와 동일
+        {                                                                          
             if (sword_Lv_0 < 4)
             {
                 tempWeapons[i] = swordWeapons[0];
@@ -524,8 +524,8 @@ public class LevelUpScript : MonoBehaviour
 
         weapons = new GameObject[3];                                                //무기 능력 선택에 쓸 배열 크기 할당당
 
-        n = Random.Range(0, i);                                                     //배열 인덱스로 쓰일 n 값을 랜덤으로 0~i 사이 값으로 설정
-        weapons[0] = tempWeapons[n];                                                //배열에 무작위 무기 능력을 넣기
+        n = Random.Range(0, i);                                                     //배열 인덱스 n 랜덤값
+        weapons[0] = tempWeapons[n];                                                //무작위 무기 능력
         tempW_0 = weapons[0].transform.parent.gameObject;                           //무작위 무기 능력의 부모를 임시로 tempW_0에 넣는다 -> 나중에 부모를 변경한 뒤에 다시 돌려놓기 위함
         weapons[0].transform.SetParent(weaponPanel.transform);                      //해당 무기 능력의 부모 변경
         weapons[0].transform.localPosition = new Vector3(-720, 0, 0);               //무기 능력 선택 카드의 위치 조정
@@ -534,7 +534,7 @@ public class LevelUpScript : MonoBehaviour
         n = Random.Range(0, i);
         weapons[1] = tempWeapons[n];
         while (weapons[0] == weapons[1])                                            //첫번째와 두번째 능력이 같을 경우 다른 능력이 선택될 때까지 반복문 실행
-        {                                                                           //이후 아래는 위와 동일
+        {                                                                         
             n = Random.Range(0, i);
             weapons[1] = tempWeapons[n];
         }
