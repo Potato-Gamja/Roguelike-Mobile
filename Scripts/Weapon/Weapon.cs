@@ -48,7 +48,7 @@ public class Weapon : MonoBehaviour
     public BoxCollider2D boxCollider_blast;  //블래스트의 박스 콜라이더
     ParticleSystem particleSystem_;          //블래스트의 파티클 시스템
     float playTime = 0f;                     //블래스트의 실행 시간
-    bool isPlay;                             //블래스트의 실형 여부
+    bool isPlay;                             //블래스트의 실행 여부
 
     [Header("Floor Weapon")]                 //장판 무기
     public List<GameObject> floorTarget;     //게임오브젝트형 리스트의 장판 타겟
@@ -99,95 +99,121 @@ public class Weapon : MonoBehaviour
 
     void Update()
     {
-        if (gameManager.isOver)        //게임오버 시 리턴
+        if (gameManager.isOver)                                            //게임오버 시 리턴
             return;
 
-        switch (type)                  //
+        switch (type)                                                      //타입 비교로 무기마다 다르게 실행
         {
-            case "missile":
-                if (transform.position.x > 20f || transform.position.x < -20f || transform.position.y > 20f || transform.position.y < -20f)
+            case "missile":                                                //미사일
+                if (transform.position.x > 20f ||                          //맵을 벗어났을 경우
+                    transform.position.x < -20f || 
+                    transform.position.y > 20f || 
+                    transform.position.y < -20f)
                 {
-                    hitCount = levelUpScript.missileData.count;
-                    gameObject.SetActive(false);
+                    hitCount = levelUpScript.missileData.count;            //타격 회수 초기화
+                    gameObject.SetActive(false);                           //미사일 비활성화
                 }
-                transform.Translate(Vector3.up * levelUpScript.missileData.speed * Time.deltaTime);
+                transform.Translate(Vector3.up *                           //미사일 이동
+                                    levelUpScript.missileData.speed * 
+                                    Time.deltaTime);    
                 break;
 
-            case "sword":
-                if (time >= levelUpScript.swordData.duration)
+            case "sword":                                                  //마법검
+                if (time >= levelUpScript.swordData.duration)              //마법검 지속시간 오버
                 {
-                    playerScript.isSword = true;
-                    playerScript.attackTime_Sword = 0f;
-                    time = 0f;
-                    swordAni.SetBool("isSword", false);
-                    playerScript.soundManager.StopSwordSound();
+                    playerScript.isSword = true;                           //마법검 준비 완료
+                    playerScript.attackTime_Sword = 0f;                    //마법검 쿨타임 타이머 초기화
+                    time = 0f;                                             //지속시간 타이머 초기화
+                    swordAni.SetBool("isSword", false);                    //비활성화 애니메이션 재생
+                    playerScript.soundManager.StopSwordSound();            //마법검 사운드 중지
                 }
 
-                time += Time.deltaTime;
+                time += Time.deltaTime;                                    //타이머 시간 증가
 
-                transform.Rotate(Vector3.back * levelUpScript.swordData.speed * Time.deltaTime);
-                transform.position = player.transform.position;
+                transform.Rotate(Vector3.back *                            //마법검 회전
+                                 levelUpScript.swordData.speed * Time.deltaTime);
+                transform.position = player.transform.position;            //플레이어 추격
                 break;
 
-            case "laser":
+            case "laser":                                                          //레이저
                 if (levelUpScript.isLaser)
                 {
-                    LaserTrans();
+                    if (playerScript.isLaser && laserBeam.activeSelf)              //레이저빔 활성화 시
+                    {
+                        transform.position = orb.transform.position;               //레이저 오브의 위치 추격
+                        if (!scanner.nearestTarget)                                //스캐너의 타겟이 없을 경우 리턴
+                            return;
+
+                        if (laserEndPoint.target && laserEndPoint.isHit)           //레이저가 공격 중일 시 타겟 유지
+                            targetPos = laserEndPoint.target.transform.position;
+                        else if (laserEndPoint.target && !laserEndPoint.isHit)     //레이저가 공격 중이 아닐 시 타겟 변경
+                            targetPos = scanner.nearestTarget.position;
+
+                        dir = targetPos - orb.transform.position;                  //타겟과 오브의 거리 계산
+                        dir = dir.normalized;                                      //방향 벡터
+                        float dis;
+                        dis = Vector2.Distance(targetPos, orb.transform.position); //타겟과 오브의 거리 비교
+                        laserLength.beamLength = dis;                              //레이저 빔의 길이 설정
+                        Quaternion lookRot = Quaternion.LookRotation(dir);         //레이저 방향 설정
+                        transform.rotation = Quaternion.Slerp(transform.rotation,  //레이저 회전
+                                                              lookRot, '
+                                                              Time.deltaTime * rotSpeed);  
+                    }
                 }
                 break;
 
-            case "laserEnd":
+            case "laserEnd":                                                       //레이저 타격 오브젝트
                 if (levelUpScript.isLaser && playerScript.isLaser)
                 {
-                    if (target == null || target.activeSelf == false)
+                    if (target == null || target.activeSelf == false)              //타겟이 없거나 타겟이 비활성화 상태일 경우
                     {
-                        target = laserScanner.targetObj;
-                        laserLength.beamLength = 0;
+                        target = laserScanner.targetObj;                           //타겟 재설정
+                        laserLength.beamLength = 0;                                //레이저 빔의 길이 0으로 설정
                     }
-                    circleCollider.enabled = true;
-                    time += Time.deltaTime;
+                    circleCollider.enabled = true;                                 //타격 콜라이더 활성화
+                    time += Time.deltaTime;                                        //타이머 증가
 
-                    if (hitCount < 1)
+                    if (hitCount < 1)                                              //타격 회수 0
                     {
-                        circleCollider.enabled = false;
-                        playerScript.attackTime_Laser = 0f;
-                        playerScript.isLaser = false;
-                        hitCount = levelUpScript.laserData.count;
-                        laserLength.beamLength = 0;
-                        laserScanner.nearestTarget = null;
-                        target = null;
-                        playerScript.soundManager.StopLaserSound();
-                        laserBeam.SetActive(false);
+                        circleCollider.enabled = false;                            //콜라이더 비활성화
+                        playerScript.attackTime_Laser = 0f;                        //레이저 타이머 초기화
+                        playerScript.isLaser = false;                              //공격 여부
+                        hitCount = levelUpScript.laserData.count;                  //레이저 타격회수 재설정
+                        laserLength.beamLength = 0;                                //레이저 빔의 길이 0으로 설정
+                        laserScanner.nearestTarget = null;                         //스캐너의 타겟 초기화
+                        target = null;                                             //타겟 초기화
+                        playerScript.soundManager.StopLaserSound();                //레이저 사운드 중지
+                        laserBeam.SetActive(false);                                //레이저 빔 비활성화
                     }
                 }
                 break;
 
-            case "blast":
-                time += Time.deltaTime;
+            case "blast":                                                    //블래스트
+                time += Time.deltaTime;                                      //타이머 증가
 
-                if (isPlay)
+                if (isPlay)                                                  //블래스트 공격 중
                     playTime += Time.deltaTime;
 
-                if (playTime < 0.5f && playTime >= 0.45f)
+                if (playTime < 0.5f && playTime >= 0.45f)                    //콜라이더 활성화 시간
                 {
-                    boxCollider_blast.enabled = true;
+                    boxCollider_blast.enabled = true;                        //콜라이더 활성화
                 }
                 if (playTime >= 0.5f)
                 {
-                    boxCollider_blast.enabled = false;
-                    isPlay = false;
-                    playTime = 0f;
+                    boxCollider_blast.enabled = false;                       //콜라이더 비활성화
+                    isPlay = false;                                          //블래스트 실행 여부 비활성화
+                    playTime = 0f;                                           //블래스트 실행 시간 초기화
                 }
 
-                if (time >= levelUpScript.blastData.attackDelay)
+                if (time >= levelUpScript.blastData.attackDelay)             //쿨타임 완료
                 {
-                    float ranX_1 = player.transform.position.x - 4.5f;
+                    float ranX_1 = player.transform.position.x - 4.5f;       //플레이어 기준으로 랜덤 좌푯값
                     float ranX_2 = player.transform.position.x + 4.5f;
 
                     float ranY_1 = player.transform.position.y - 6f;
                     float ranY_2 = player.transform.position.y + 6f;
 
-                    if (ranX_1 < playerScript.minPos.x)
+                    if (ranX_1 < playerScript.minPos.x)                      //플레이어의 이동범위 밖일 경우 범위 조정
                         ranX_1 = playerScript.minPos.x;
 
                     if (ranX_2 > playerScript.maxPos.x)
@@ -199,71 +225,48 @@ public class Weapon : MonoBehaviour
                     if (ranY_2 > playerScript.maxPos.y)
                         ranY_2 = playerScript.maxPos.y;
 
-                    Vector2 ran = new Vector2(math.floor(Random.Range(ranX_1, ranX_2) * 10) * 0.1f,
+                    Vector2 ran = new Vector2(math.floor(Random.Range(ranX_1, ranX_2) * 10) * 0.1f,    //랜덤 좌푯값 소수점 한자리 버리기
                                               math.floor(Random.Range(ranY_1, ranY_2) * 10) * 0.1f);
 
-                    transform.position = ran;
-                    isPlay = true;
-                    particleSystem_.Play();
-                    playerScript.soundManager.PlayBlastSound();
-                    time = 0f;
+                    transform.position = ran;                                //블래스트 위치 이동
+                    isPlay = true;                                           //블래스트 실행 여부 활성화
+                    particleSystem_.Play();                                  //파티클 시스템 실행
+                    playerScript.soundManager.PlayBlastSound();              //블래스트 사운드 재생
+                    time = 0f;                                               //타이머 초기화화
                 }
                 break;
 
-            case "floor":
-                time += Time.deltaTime;
+            case "floor":                                //장판
+                time += Time.deltaTime;                  //타이머 증가
 
                 break;
         }
     }
 
-    public void Retarget()
+    public void Retarget()                    //레이저의 타겟 재설정
     {
             target = laserScanner.targetObj;
     }
 
-    public void LaserTrans()
-    {
-        if (playerScript.isLaser && laserBeam.activeSelf)
-        {
-            transform.position = orb.transform.position;
-            if (!scanner.nearestTarget)
-                return;
 
-            if (laserEndPoint.target && laserEndPoint.isHit)
-                targetPos = laserEndPoint.target.transform.position;
-            else if (laserEndPoint.target && !laserEndPoint.isHit)
-                targetPos = scanner.nearestTarget.position;
-
-            dir = targetPos - orb.transform.position;
-            dir = dir.normalized;
-            float dis;
-            dis = Vector2.Distance(targetPos, orb.transform.position);
-            laserLength.beamLength = dis;
-            Quaternion lookRot = Quaternion.LookRotation(dir);
-            transform.rotation = Quaternion.Slerp(transform.rotation, lookRot, Time.deltaTime * rotSpeed);
-        }
-        
-    }
-
-    public void FloorDebuff()
+    public void FloorDebuff()                                                                                             //장판 디버프
     {
         for (int i = 0; i < floorTarget.Count; i++)
         {
-            MonsterScript targetMon = floorTarget[i].GetComponent<MonsterScript>();
-            targetMon.speed = targetMon.speed_Defalt - targetMon.speed_Defalt * 0.01f * levelUpScript.floorData.slow;
+            MonsterScript targetMon = floorTarget[i].GetComponent<MonsterScript>();                                       //장판 타겟 리스트에 있는 몬스터 스크립트를 가져오기
+            targetMon.speed = targetMon.speed_Defalt - targetMon.speed_Defalt * 0.01f * levelUpScript.floorData.slow;     //몬스터 이동속도 감소
 
-            targetMon.defense = targetMon.defense_Defalt - levelUpScript.floorData.decrease;
+            targetMon.defense = targetMon.defense_Defalt - levelUpScript.floorData.decrease;                              //몬스터 방어력 감소
         }
 
     }
 
-    public void SwordDis()
+    public void SwordDis()                                                            //마법검 비활성화
     {
         levelUpScript.sword[levelUpScript.swordCount].SetActive(false);
     }
 
-    void OnTriggerEnter2D(Collider2D collision)
+    void OnTriggerEnter2D(Collider2D collision)                                       //
     {
         if (collision.CompareTag("Monster") && type == "missile" && hitCount > 0)
         {
