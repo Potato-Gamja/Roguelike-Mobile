@@ -8,7 +8,7 @@
 4. 개발기간: 2024.07 ~ 2024.12 (4~5개월)
 
 
-# 사용한 에셋:
+# 추가로 사용한 에셋:
 
 Brown Rock Tileset - Top-down 32x32 Pixel-art / by Mushra Games (맵)
 
