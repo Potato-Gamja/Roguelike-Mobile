@@ -48,8 +48,8 @@ public class PlayerScript : MonoBehaviour
     int weaponCount = 0;                //미사일 인덱스 값
     
     float attackTime_Missile = 0;       //미사일 공격 타이머
-    public float attackTime_Laser = 0;         //레이저 공격 타이머
-    public float attackTime_Sword = 0;         //마법검 공격 타이머
+    public float attackTime_Laser = 0;  //레이저 공격 타이머
+    public float attackTime_Sword = 0;  //마법검 공격 타이머
 
     [SerializeField]
     CircleCollider2D[] missileCol;      //미사일의 콜라이더
