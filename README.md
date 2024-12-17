@@ -1,3 +1,5 @@
+E-mail: seunguk.gamja@gmail.com
+
 # 포트폴리오
 
 포트폴리오용 뱀서류 모바일 2D 게임입니다.
