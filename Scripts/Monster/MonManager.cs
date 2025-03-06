@@ -303,7 +303,7 @@ public class MonManager : MonoBehaviour
         {
             case 0:                                                                     //웨이브
                 var monSpawn_1 = monPrefabs_1[mCount];                                  //몬스터 할당
-                monSpawn_1.transform.position = new Vector3(posX, posY, 0);             //몬스터 위치를 경고 위치로 변경경
+                monSpawn_1.transform.position = new Vector3(posX, posY, 0);             //몬스터 위치를 경고 위치로 변경
 
                 monScripts_1[mCount].ResetStat();                                       //몬스터의 스탯 설정
                 monPrefabs_1[mCount].SetActive(true);                                   //몬스터 활성화
