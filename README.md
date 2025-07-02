@@ -10,6 +10,15 @@ E-mail: seunguk.gamja@gmail.com
 4. 개발기간: 2024.06.13 ~ 2024.12.04 (6개월)
 
 
+# 기능 구현
+
+1. 오브젝트 풀링
+2. 몬스터
+3. 플레이어
+4. 무기
+5. 레벨업 및 업그레이드
+등등
+
 # 추가로 사용한 에셋:
 
 Brown Rock Tileset - Top-down 32x32 Pixel-art / by Mushra Games (맵)
