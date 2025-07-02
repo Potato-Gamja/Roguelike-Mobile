@@ -8,17 +8,8 @@ E-mail: seunguk.gamja@gmail.com
 2. 개발환경: Unity
 3. 플랫폼: 안드로이드
 4. 개발기간: 2024.06.13 ~ 2024.12.04 (6개월)
-
-
-# 기능 구현
-
-1. 오브젝트 풀링
-2. 몬스터
-3. 플레이어
-4. 무기
-5. 레벨업 및 업그레이드
+   
 <br>
-등등
 
 # 추가로 사용한 에셋:
 
@@ -41,6 +32,8 @@ AOE Magic spells Vol.1 / by Hovl Studio (스킬 이펙트, 효과음)
 Combat Magic Spells - Volume II / by Alan Dalcastagne da Cunha (효과음)
 
 등등...
+
+<br>
 
 # 플레이 영상: 
 https://youtu.be/ND66nvTL4Mo
